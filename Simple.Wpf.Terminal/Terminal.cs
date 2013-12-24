@@ -14,8 +14,8 @@
 
     /// <summary>
     /// A WPF user control which mimics a terminal\console window, you are responsible for the service
-    /// behind the control - the data to display and processing the line when the Enter key is pressed
-    /// LineEntered event.
+    /// behind the control - the data to display and processing the entered line when the LineEntered event is raised.
+    /// The data is bound via the ItemsSource dependancy property.
     /// </summary>
     public sealed class Terminal : RichTextBox
     {
@@ -200,64 +200,32 @@
         {
             base.OnPreviewKeyDown(args);
 
-            if (args.Key == Key.Enter)
+            switch (args.Key)
             {
-                HandleEnterKey();
-                args.Handled = true;
-            }
-            else if (args.Key == Key.PageUp || args.Key == Key.PageDown)
-            {
-                args.Handled = true;
-            }
-            else if (args.Key == Key.Escape)
-            {
-                ClearAfterPrompt();
-                args.Handled = true;
-            }
-            else if (args.Key == Key.Down || args.Key == Key.Up)
-            {
-                if (_buffer.Any())
-                {
+                case Key.Enter:
+                    HandleEnterKey();
+                    args.Handled = true;
+                    break;
+                case Key.PageDown:
+                case Key.PageUp:
+                    args.Handled = true;
+                    break;
+                case Key.Escape:
                     ClearAfterPrompt();
-
-                    string existingLine;
-                    if (args.Key == Key.Down)
-                    {
-                        existingLine = _buffer[_buffer.Count - 1];
-                        _buffer.RemoveAt(_buffer.Count - 1);
-                        _buffer.Insert(0, existingLine);
-                    }
-                    else
-                    {
-                        existingLine = _buffer[0];
-                        _buffer.RemoveAt(0);
-                        _buffer.Add(existingLine);
-                    }
-
-                    AddLine(existingLine);
-                }
-
-                args.Handled = true;
-            }
-            else if (args.Key == Key.Left || args.Key == Key.Back)
-            {
-                var promptEnd = _promptInline.ContentEnd;
-
-                var textPointer = GetTextPointer(promptEnd, LogicalDirection.Forward);
-                if (textPointer == null)
+                    args.Handled = true;
+                    break;
+                case Key.Up:
+                case Key.Down:
+                    HandleUpDownKeys(args);
+                    args.Handled = true;
+                    break;
+                case Key.Back:
+                case Key.Left:
                 {
-                    if (CaretPosition.CompareTo(promptEnd) == 0)
-                    {
-                        args.Handled = true;
-                    }
+                    var handled = HandleCursorLeftKeys();
+                    args.Handled = handled;
                 }
-                else
-                {
-                    if (CaretPosition.CompareTo(textPointer) == 0)
-                    {
-                        args.Handled = true;
-                    }
-                }
+                break;
             }
         }
 
@@ -266,6 +234,17 @@
             if (args.NewValue == args.OldValue)
             {
                 return;
+            }
+
+            if (args.NewValue != null && args.OldValue != null)
+            {
+                var newEnumerable = ((IEnumerable)args.NewValue).Cast<object>();
+                var oldEnumerable = ((IEnumerable)args.OldValue).Cast<object>();
+
+                if (newEnumerable.SequenceEqual(oldEnumerable))
+                {
+                    return;
+                }
             }
 
             var terminal = ((Terminal)d);
@@ -371,73 +350,69 @@
 
             if (items is INotifyCollectionChanged)
             {
+                var notifyChanged = (INotifyCollectionChanged)items;
+                if (_notifyChanged != null)
+                {
+                    _notifyChanged.CollectionChanged -= HandleItemsChanged;
+                }
+
+                _notifyChanged = notifyChanged;
+                _notifyChanged.CollectionChanged += HandleItemsChanged;
+
                 // ReSharper disable once PossibleMultipleEnumeration
-                ObserveValues(items);
+                var existingItems = items.Cast<object>().ToArray();
+                if (existingItems.Any())
+                {
+                    ReplaceItems(existingItems);
+                }
+                else
+                {
+                    ClearItems();
+                }
             }
             else
             {
                 // ReSharper disable once PossibleMultipleEnumeration
-                ReplaceValues(items);
-            }
-
-            // ReSharper disable once PossibleMultipleEnumeration
-            var valuesNow = items.Cast<object>().ToArray();
-            if (valuesNow.Any())
-            {
-                _paragraph.Inlines.Remove(_promptInline);
-
-                AddOutputs(valuesNow);
-
-                _paragraph.Inlines.Add(_promptInline);
-                CaretPosition = CaretPosition.DocumentEnd;
+                ReplaceItems(items);
             }
         }
 
-        private void ObserveValues(IEnumerable values)
+        private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            var notifyChanged = (INotifyCollectionChanged)values;
-
-            if (_notifyChanged != null)
+            if (args.Action == NotifyCollectionChangedAction.Add)
             {
-                _notifyChanged.CollectionChanged -= HandleValuesChanged;
+                AddItems(args.NewItems.Cast<object>());
             }
-
-            _notifyChanged = notifyChanged;
-            _notifyChanged.CollectionChanged += HandleValuesChanged;
+            else
+            {
+                ReplaceItems(args.NewItems);
+            }
         }
 
-        private void HandleValuesChanged(object sender, NotifyCollectionChangedEventArgs args)
+        private void ClearItems()
+        {
+            _paragraph.Inlines.Clear();
+            _paragraph.Inlines.Add(_promptInline);
+            CaretPosition = CaretPosition.DocumentEnd;
+        }
+
+        private void ReplaceItems(IEnumerable items)
+        {
+            _paragraph.Inlines.Clear();
+            AddItems(ConvertToEnumerable(items));
+
+            _paragraph.Inlines.Add(_promptInline);
+            CaretPosition = CaretPosition.DocumentEnd;
+        }
+
+        private void AddItems(IEnumerable items)
         {
             _paragraph.Inlines.Remove(_promptInline);
 
-            if (args.Action == NotifyCollectionChangedAction.Add)
+            foreach (var item in items.Cast<object>())
             {
-                AddOutputs(args.NewItems.Cast<object>());
-            }
-            else
-            {
-                ReplaceValues(args.NewItems);
-            }
-
-            _paragraph.Inlines.Add(_promptInline);
-            CaretPosition = CaretPosition.DocumentEnd;
-        }
-
-        private void ReplaceValues(IEnumerable outputs)
-        {
-            _paragraph.Inlines.Clear();
-            AddOutputs(ConvertToEnumerable(outputs));
-
-            _paragraph.Inlines.Add(_promptInline);
-            CaretPosition = CaretPosition.DocumentEnd;
-        }
-
-        private void AddOutputs(IEnumerable outputs)
-        {
-            foreach (var output in outputs.Cast<object>())
-            {
-                var value = ExtractValue(output);
-                var isError = ExtractIsError(output);
+                var value = ExtractValue(item);
+                var isError = ExtractIsError(item);
 
                 var inline = new Run(value);
                 if (isError)
@@ -447,13 +422,16 @@
 
                 _paragraph.Inlines.Add(inline);
             }
+
+            _paragraph.Inlines.Add(_promptInline);
+            CaretPosition = CaretPosition.DocumentEnd;
         }
 
-        private static IEnumerable<object> ConvertToEnumerable(object values)
+        private static IEnumerable<object> ConvertToEnumerable(object item)
         {
             try
             {
-                return values == null ? Enumerable.Empty<object>() : ((IEnumerable)values).Cast<object>();
+                return item == null ? Enumerable.Empty<object>() : ((IEnumerable)item).Cast<object>();
             }
             catch (Exception)
             {
@@ -483,24 +461,24 @@
             return null;
         }
 
-        private string ExtractValue(object output)
+        private string ExtractValue(object item)
         {
             var displayPath = ItemDisplayPath;
             if (displayPath == null)
             {
-                return output == null ? string.Empty : output.ToString();
+                return item == null ? string.Empty : item.ToString();
             }
 
             if (_displayPathProperty == null)
             {
-                _displayPathProperty = output.GetType().GetProperty(displayPath);
+                _displayPathProperty = item.GetType().GetProperty(displayPath);
             }
 
-            var value = _displayPathProperty.GetValue(output, null);
+            var value = _displayPathProperty.GetValue(item, null);
             return value == null ? string.Empty : value.ToString();
         }
 
-        private bool ExtractIsError(object output)
+        private bool ExtractIsError(object item)
         {
             var isErrorPath = ItemIsErrorPath;
             if (isErrorPath == null)
@@ -510,11 +488,37 @@
 
             if (_isErrorPathProperty == null)
             {
-                _isErrorPathProperty = output.GetType().GetProperty(isErrorPath);
+                _isErrorPathProperty = item.GetType().GetProperty(isErrorPath);
             }
 
-            var value = _isErrorPathProperty.GetValue(output, null);
+            var value = _isErrorPathProperty.GetValue(item, null);
             return (bool)value;
+        }
+
+        private void HandleUpDownKeys(KeyEventArgs args)
+        {
+            if (!_buffer.Any())
+            {
+                return;
+            }
+
+            ClearAfterPrompt();
+
+            string existingLine;
+            if (args.Key == Key.Down)
+            {
+                existingLine = _buffer[_buffer.Count - 1];
+                _buffer.RemoveAt(_buffer.Count - 1);
+                _buffer.Insert(0, existingLine);
+            }
+            else
+            {
+                existingLine = _buffer[0];
+                _buffer.RemoveAt(0);
+                _buffer.Add(existingLine);
+            }
+
+            AddLine(existingLine);
         }
 
         private void HandleEnterKey()
@@ -529,6 +533,29 @@
             CaretPosition = CaretPosition.DocumentEnd;
 
             OnLineEntered();
+        }
+
+        private bool HandleCursorLeftKeys()
+        {
+            var promptEnd = _promptInline.ContentEnd;
+
+            var textPointer = GetTextPointer(promptEnd, LogicalDirection.Forward);
+            if (textPointer == null)
+            {
+                if (CaretPosition.CompareTo(promptEnd) == 0)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                if (CaretPosition.CompareTo(textPointer) == 0)
+                {
+                    return true;
+                }
+            }
+
+            return true;
         }
 
         private void OnLineEntered()
