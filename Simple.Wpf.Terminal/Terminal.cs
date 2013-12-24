@@ -10,7 +10,6 @@
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Input;
-    using System.Windows.Media;
 
     public sealed class Terminal : RichTextBox
     {
@@ -21,42 +20,31 @@
             typeof(Terminal),
             new PropertyMetadata(default(IEnumerable), OnItemsSourceChanged));
 
-        public static readonly DependencyProperty DisplayPathProperty = DependencyProperty.Register("DisplayPath",
-            typeof(string),
-            typeof(Terminal),
-            new PropertyMetadata(default(string), OnDisplayPathChanged));
-
-        public static readonly DependencyProperty IsErrorPathProperty = DependencyProperty.Register("IsErrorPath",
-            typeof(string),
-            typeof(Terminal),
-            new PropertyMetadata(default(string), OnIsErrorPathChanged));
-
         public static readonly DependencyProperty LineProperty = DependencyProperty.Register("Line",
-            typeof(string),
-            typeof(Terminal),
-            new PropertyMetadata(default(string)));
+           typeof(string),
+           typeof(TerminalItem),
+           new PropertyMetadata(default(string)));
 
-        public static readonly DependencyProperty PromptProperty = DependencyProperty.Register("Prompt",
-            typeof(string),
-            typeof(Terminal),
-            new PropertyMetadata(default(string)));
-
-        public static readonly DependencyProperty ErrorColorProperty = DependencyProperty.Register("ErrorColor",
-           typeof(Brush),
-           typeof(Terminal),
-           new PropertyMetadata(new SolidColorBrush(Colors.Red)));
-
+        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register("Item",
+          typeof(string),
+          typeof(TerminalItem),
+          new PropertyMetadata(default(TerminalItem)));
+        
         private readonly Paragraph _paragraph;
-
-        private PropertyInfo _displayPathProperty;
-        private PropertyInfo _isErrorPathProperty;
+        private readonly List<string> _buffer;
+        private readonly TerminalItem _item;
 
         private Run _promptInline;
         private INotifyCollectionChanged _notifyChanged;
-        private List<string> _buffer;
+        private PropertyInfo _displayPathProperty;
+        private PropertyInfo _isErrorPathProperty;
 
         public Terminal()
         {
+            _item = new TerminalItem();
+            _item.DisplayPathChanged += (s, e) => { _displayPathProperty = null; };
+            _item.IsErrorPathChanged += (s, e) => { _isErrorPathProperty = null; };
+
             _buffer = new List<string>();
 
             _paragraph = new Paragraph();
@@ -78,36 +66,18 @@
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-        public string DisplayPath
-        {
-            get { return (string)GetValue(DisplayPathProperty); }
-            set { SetValue(DisplayPathProperty, value); }
-        }
-
-        public string IsErrorPath
-        {
-            get { return (string)GetValue(IsErrorPathProperty); }
-            set { SetValue(IsErrorPathProperty, value); }
-        }
-
         public string Line
         {
             get { return (string)GetValue(LineProperty); }
             set { SetValue(LineProperty, value); }
         }
 
-        public string Prompt
+        public TerminalItem Item
         {
-            get { return (string)GetValue(PromptProperty); }
-            set { SetValue(PromptProperty, value); }
+            get { return (TerminalItem)GetValue(ItemProperty); }
+            set { SetValue(ItemProperty, value); }
         }
-
-        public Brush ErrorColor
-        {
-            get { return (Brush)GetValue(ErrorColorProperty); }
-            set { SetValue(ErrorColorProperty, value); }
-        }
-
+        
         protected override void OnPreviewKeyDown(KeyEventArgs args)
         {
             base.OnPreviewKeyDown(args);
@@ -191,21 +161,9 @@
             }
         }
 
-        private static void OnDisplayPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {
-            var terminal = ((Terminal)d);
-            terminal._displayPathProperty = null;
-        }
-
-        private static void OnIsErrorPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {
-            var terminal = ((Terminal)d);
-            terminal._isErrorPathProperty = null;
-        }
-
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
-            _promptInline = new Run(Prompt);
+            _promptInline = new Run(_item.Prompt);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs args)
@@ -288,7 +246,7 @@
                 var inline = new Run(value);
                 if (isError)
                 {
-                    inline.Foreground = ErrorColor;
+                    inline.Foreground = _item.ErrorColor;
                 }
 
                 _paragraph.Inlines.Add(inline);
@@ -331,7 +289,7 @@
 
         private string ExtractValue(object output)
         {
-            var displayPath = DisplayPath;
+            var displayPath = _item.DisplayPath;
             if (displayPath == null)
             {
                 return output == null ? string.Empty : output.ToString();
@@ -348,7 +306,7 @@
 
         private bool ExtractIsError(object output)
         {
-            var isErrorPath = IsErrorPath;
+            var isErrorPath = _item.IsErrorPath;
             if (isErrorPath == null)
             {
                 return false;
