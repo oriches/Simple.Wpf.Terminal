@@ -1,4 +1,4 @@
 Simple.Wpf.Terminal
 ===================
 
-A simple console	erminal window for use in a WPF application 
+A simple console\\terminal window for use in a WPF application 
