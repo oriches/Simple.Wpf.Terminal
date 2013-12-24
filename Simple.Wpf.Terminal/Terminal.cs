@@ -269,7 +269,7 @@
             }
 
             var terminal = ((Terminal)d);
-            terminal.ProcessItems((IEnumerable<string>)args.NewValue);
+            terminal.ProcessItems((IEnumerable)args.NewValue);
         }
         
         private static void OnItemsMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -339,7 +339,7 @@
             args.Handled = true;
         }
 
-        private void ProcessItems(IEnumerable<string> items)
+        private void ProcessItems(IEnumerable items)
         {
             if (items is INotifyCollectionChanged)
             {
