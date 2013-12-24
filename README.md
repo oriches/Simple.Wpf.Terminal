@@ -7,6 +7,8 @@ This user control does NOT actually do anything more than display data - the use
 
 Examples of how this user control could be used:
 
-..* Custom F# Interactive window,
-..* Log viewer,
-..* Directory browser.
+1.  Custom F# Interactive window,
+
+2.  Log viewer,
+
+3.  Directory browser.
