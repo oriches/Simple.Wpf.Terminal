@@ -7,6 +7,15 @@ This user control does NOT actually do anything more than display data - the use
 
 Examples of how this user control could be used:
 
-..* Custom F# Interactive window,
-..* Log viewer,
-..* Directory browser.
+1.  Custom F# Interactive window,
+
+2.  Log viewer,
+
+3.  Directory browser.
+
+
+This control is being used as part of blog posts about a custom F# Interactive UI in WPF - currently in progress.
+
+http://awkwardcoder.blogspot.co.uk/2013/12/simple-f-repl-in-wpf-part-1.html
+
+http://awkwardcoder.blogspot.co.uk/2013/12/simple-f-repl-in-wpf-part-2.html
