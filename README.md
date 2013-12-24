@@ -9,7 +9,7 @@ Examples of how this user control could be used:
 
 1.  Custom F# Interactive window,
 
-2.  Log viewer,
+2.  Log viewer - see the 'Logging Workspace' example in https://github.com/oriches/Simple.Wpf.Composition
 
 3.  Directory browser.
 
