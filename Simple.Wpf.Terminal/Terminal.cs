@@ -122,13 +122,6 @@
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
-
-            Loaded += OnLoaded;
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            
         }
 
         /// <summary>
@@ -370,6 +363,9 @@
         {
             if (items == null)
             {
+                _paragraph.Inlines.Clear();
+                _paragraph.Inlines.Add(_promptInline);
+
                 return;
             }
 
