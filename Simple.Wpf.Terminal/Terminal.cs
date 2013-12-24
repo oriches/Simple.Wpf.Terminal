@@ -10,44 +10,108 @@
     using System.Windows.Controls;
     using System.Windows.Documents;
     using System.Windows.Input;
+    using System.Windows.Media;
 
+    /// <summary>
+    /// A WPF user control which mimics a terminal\console window, you are responsible for the service
+    /// behind the control - the data to display and processing the line when the Enter key is pressed
+    /// LineEntered event.
+    /// </summary>
     public sealed class Terminal : RichTextBox
     {
-        public event EventHandler LineChanged;
+        /// <summary>
+        /// Event fired when the user presses the Enter key
+        /// </summary>
+        public event EventHandler LineEntered;
 
+        /// <summary>
+        /// The items to be displayed in the terminal window, e.g. an ObsrevableCollection.
+        /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource",
             typeof(IEnumerable),
             typeof(Terminal),
             new PropertyMetadata(default(IEnumerable), OnItemsSourceChanged));
 
-        public static readonly DependencyProperty LineProperty = DependencyProperty.Register("Line",
-           typeof(string),
-           typeof(TerminalItem),
-           new PropertyMetadata(default(string)));
+        /// <summary>
+        /// The margin around the contents of the terminal window, optional field with a default value of 0.
+        /// </summary>
+        public static readonly DependencyProperty ItemsMarginProperty = DependencyProperty.Register("ItemsMargin",
+            typeof(Thickness),
+            typeof(Terminal),
+            new PropertyMetadata(new Thickness(), OnItemsMarginChanged));
 
-        public static readonly DependencyProperty ItemProperty = DependencyProperty.Register("Item",
-          typeof(string),
-          typeof(TerminalItem),
-          new PropertyMetadata(default(TerminalItem)));
-        
+        /// <summary>
+        /// The terminal prompt to be displayed.
+        /// </summary>
+        public static readonly DependencyProperty PromptProperty = DependencyProperty.Register("Prompt",
+            typeof(string),
+            typeof(Terminal),
+            new PropertyMetadata(default(string)));
+
+        /// <summary>
+        /// The current the editable line in the terminal, there is only one editable line in the terminal and this is at the bottom
+        /// of the content.
+        /// </summary>
+        public static readonly DependencyProperty LineProperty = DependencyProperty.Register("Line",
+            typeof(string),
+            typeof(Terminal),
+            new PropertyMetadata(default(string)));
+
+        /// <summary>
+        /// The property name of the 'value' to be displayed, optional field which if null then ToString() is called on the
+        /// bound instance.
+        /// </summary>
+        public static readonly DependencyProperty ItemDisplayPathProperty = DependencyProperty.Register("ItemDisplayPath",
+            typeof(string),
+            typeof(Terminal),
+            new PropertyMetadata(default(string), OnDisplayPathChanged));
+
+        /// <summary>
+        /// The property name of the 'isError' field, optional field used to determine if the terminal output is an error for the
+        /// bound instance. The default value is false.
+        /// bound instance.
+        /// </summary>
+        public static readonly DependencyProperty ItemIsErrorPathProperty = DependencyProperty.Register("ItemIsErrorPath",
+            typeof(string),
+            typeof(Terminal),
+            new PropertyMetadata(default(string), OnIsErrorPathChanged));
+
+        /// <summary>
+        /// The color of standard error messages, optional field with a default value of Red.
+        /// </summary>
+        public static readonly DependencyProperty ItemErrorColorProperty = DependencyProperty.Register("ItemErrorColor",
+            typeof(Brush),
+            typeof(Terminal),
+            new PropertyMetadata(new SolidColorBrush(Colors.Red)));
+
+        /// <summary>
+        /// The height of each line in the terminal window, optional field with a default value of 10.
+        /// </summary>
+        public static readonly DependencyProperty ItemHeightProperty = DependencyProperty.Register("ItemHeight",
+            typeof(int),
+            typeof(Terminal),
+            new PropertyMetadata(10, OnItemHeightChanged));
+
         private readonly Paragraph _paragraph;
         private readonly List<string> _buffer;
-        private readonly TerminalItem _item;
 
         private Run _promptInline;
         private INotifyCollectionChanged _notifyChanged;
         private PropertyInfo _displayPathProperty;
         private PropertyInfo _isErrorPathProperty;
 
+        /// <summary>
+        /// Default constructor
+        /// </summary>
         public Terminal()
         {
-            _item = new TerminalItem();
-            _item.DisplayPathChanged += (s, e) => { _displayPathProperty = null; };
-            _item.IsErrorPathChanged += (s, e) => { _isErrorPathProperty = null; };
-
             _buffer = new List<string>();
 
-            _paragraph = new Paragraph();
+            _paragraph = new Paragraph
+            {
+                Margin = ItemsMargin,
+                LineHeight = ItemHeight
+            };
 
             Document = new FlowDocument(_paragraph);
 
@@ -60,22 +124,76 @@
             Unloaded += OnUnloaded;
         }
 
+        /// <summary>
+        /// The bound items to the terminal.
+        /// </summary>
         public IEnumerable ItemsSource
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
 
+        /// <summary>
+        /// The prompt of the terminal.
+        /// </summary>
+        public string Prompt
+        {
+            get { return (string)GetValue(PromptProperty); }
+            set { SetValue(PromptProperty, value); }
+        }
+
+        /// <summary>
+        /// The current editable line of the terminal (bottom line).
+        /// </summary>
         public string Line
         {
             get { return (string)GetValue(LineProperty); }
             set { SetValue(LineProperty, value); }
         }
 
-        public TerminalItem Item
+        /// <summary>
+        /// The display path for the bound items.
+        /// </summary>
+        public string ItemDisplayPath
         {
-            get { return (TerminalItem)GetValue(ItemProperty); }
-            set { SetValue(ItemProperty, value); }
+            get { return (string)GetValue(ItemDisplayPathProperty); }
+            set { SetValue(ItemDisplayPathProperty, value); }
+        }
+
+        /// <summary>
+        /// The is error path for the bound items.
+        /// </summary>
+        public string ItemIsErrorPath
+        {
+            get { return (string)GetValue(ItemIsErrorPathProperty); }
+            set { SetValue(ItemIsErrorPathProperty, value); }
+        }
+
+        /// <summary>
+        /// The error color for the bound items.
+        /// </summary>
+        public Brush ItemErrorColor
+        {
+            get { return (Brush)GetValue(ItemErrorColorProperty); }
+            set { SetValue(ItemErrorColorProperty, value); }
+        }
+
+        /// <summary>
+        /// The individual line height for the bound items.
+        /// </summary>
+        public int ItemHeight
+        {
+            get { return (int)GetValue(ItemHeightProperty); }
+            set { SetValue(ItemHeightProperty, value); }
+        }
+
+        /// <summary>
+        /// The margin around the bound items.
+        /// </summary>
+        public Thickness ItemsMargin
+        {
+            get { return (Thickness)GetValue(ItemsMarginProperty); }
+            set { SetValue(ItemsMarginProperty, value); }
         }
         
         protected override void OnPreviewKeyDown(KeyEventArgs args)
@@ -161,9 +279,53 @@
             }
         }
 
+        private static void OnItemsMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == args.OldValue)
+            {
+                return;
+            }
+
+            var terminal = ((Terminal)d);
+            terminal._paragraph.Margin = (Thickness) args.NewValue;
+        }
+
+        private static void OnItemHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == args.OldValue)
+            {
+                return;
+            }
+
+            var terminal = ((Terminal)d);
+            terminal._paragraph.LineHeight = (int)args.NewValue;
+        }
+        
+        private static void OnDisplayPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == args.OldValue)
+            {
+                return;
+            }
+
+            var terminal = ((Terminal)d);
+            terminal._displayPathProperty = null;
+        }
+
+        private static void OnIsErrorPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == args.OldValue)
+            {
+                return;
+            }
+
+            var terminal = ((Terminal)d);
+            terminal._isErrorPathProperty = null;
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs args)
         {
-            _promptInline = new Run(_item.Prompt);
+            _promptInline = new Run(Prompt);
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs args)
@@ -246,7 +408,7 @@
                 var inline = new Run(value);
                 if (isError)
                 {
-                    inline.Foreground = _item.ErrorColor;
+                    inline.Foreground = ItemErrorColor;
                 }
 
                 _paragraph.Inlines.Add(inline);
@@ -289,7 +451,7 @@
 
         private string ExtractValue(object output)
         {
-            var displayPath = _item.DisplayPath;
+            var displayPath = ItemDisplayPath;
             if (displayPath == null)
             {
                 return output == null ? string.Empty : output.ToString();
@@ -306,7 +468,7 @@
 
         private bool ExtractIsError(object output)
         {
-            var isErrorPath = _item.IsErrorPath;
+            var isErrorPath = ItemIsErrorPath;
             if (isErrorPath == null)
             {
                 return false;
@@ -337,7 +499,7 @@
 
         private void OnLineEntered()
         {
-            var handler = LineChanged;
+            var handler = LineEntered;
 
             if (handler != null)
             {

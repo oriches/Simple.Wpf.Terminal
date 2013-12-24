@@ -5,6 +5,11 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal", "Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{0C7FED52-E15B-468D-AEE7-AE2195BD3730}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E7765B54-8B3C-4EAA-A542-B7EFD1C8CD8F}"
+	ProjectSection(SolutionItems) = preProject
+		Simple.Wpf.Terminal.nupkg = Simple.Wpf.Terminal.nupkg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
