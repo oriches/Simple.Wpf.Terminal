@@ -94,8 +94,8 @@
 
         private readonly Paragraph _paragraph;
         private readonly List<string> _buffer;
+        private readonly Run _promptInline;
 
-        private Run _promptInline;
         private INotifyCollectionChanged _notifyChanged;
         private PropertyInfo _displayPathProperty;
         private PropertyInfo _isErrorPathProperty;
@@ -113,15 +113,15 @@
                 LineHeight = ItemHeight
             };
 
+            _promptInline = new Run(Prompt);
+            _paragraph.Inlines.Add(_promptInline);
+
             Document = new FlowDocument(_paragraph);
 
             TextChanged += (s, e) => ScrollToEnd();
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
-
-            Loaded += OnLoaded;
-            Unloaded += OnUnloaded;
         }
 
         /// <summary>
@@ -269,16 +269,9 @@
             }
 
             var terminal = ((Terminal)d);
-            if (args.NewValue is INotifyCollectionChanged)
-            {
-                terminal.ObserveChanges((IEnumerable)args.NewValue);
-            }
-            else
-            {
-                terminal.ReplaceValues((IEnumerable)args.NewValue);
-            }
+            terminal.ProcessItems((IEnumerable<string>)args.NewValue);
         }
-
+        
         private static void OnItemsMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue)
@@ -323,19 +316,6 @@
             terminal._isErrorPathProperty = null;
         }
 
-        private void OnLoaded(object sender, RoutedEventArgs args)
-        {
-            _promptInline = new Run(Prompt);
-        }
-
-        private void OnUnloaded(object sender, RoutedEventArgs args)
-        {
-            if (_notifyChanged != null)
-            {
-                _notifyChanged.CollectionChanged -= HandleValuesChanged;
-            }
-        }
-
         private void CopyCommand(object sender, DataObjectCopyingEventArgs args)
         {
             if (!string.IsNullOrEmpty(Selection.Text))
@@ -359,17 +339,35 @@
             args.Handled = true;
         }
 
-        private void ObserveChanges(IEnumerable values)
+        private void ProcessItems(IEnumerable<string> items)
+        {
+            if (items is INotifyCollectionChanged)
+            {
+                ObserveValues(items);
+            }
+            else
+            {
+                ReplaceValues(items);
+            }
+        }
+
+        private void ObserveValues(IEnumerable values)
         {
             var notifyChanged = (INotifyCollectionChanged)values;
 
             if (_notifyChanged != null)
             {
-                _notifyChanged.CollectionChanged += HandleValuesChanged;
+                _notifyChanged.CollectionChanged -= HandleValuesChanged;
             }
 
             _notifyChanged = notifyChanged;
             _notifyChanged.CollectionChanged += HandleValuesChanged;
+
+            var valuesNow = values.Cast<object>().ToArray();
+            if (valuesNow.Any())
+            {
+                AddOutputs(valuesNow);
+            }
         }
 
         private void HandleValuesChanged(object sender, NotifyCollectionChangedEventArgs args)
