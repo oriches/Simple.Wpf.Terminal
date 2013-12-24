@@ -46,7 +46,7 @@
         public static readonly DependencyProperty PromptProperty = DependencyProperty.Register("Prompt",
             typeof(string),
             typeof(Terminal),
-            new PropertyMetadata(default(string)));
+            new PropertyMetadata(default(string), OnPromptChanged));
 
         /// <summary>
         /// The current the editable line in the terminal, there is only one editable line in the terminal and this is at the bottom
@@ -122,6 +122,13 @@
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            
         }
 
         /// <summary>
@@ -271,6 +278,26 @@
             var terminal = ((Terminal)d);
             terminal.ProcessItems((IEnumerable)args.NewValue);
         }
+
+        private static void OnPromptChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == args.OldValue)
+            {
+                return;
+            }
+
+            var terminal = ((Terminal)d);
+            if (terminal._promptInline != null)
+            {
+                var newPrompt = string.Empty;
+                if (args.NewValue != null)
+                {
+                    newPrompt = args.NewValue.ToString();
+                }
+
+                terminal._promptInline.Text = newPrompt;
+            }
+        }
         
         private static void OnItemsMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -341,13 +368,32 @@
 
         private void ProcessItems(IEnumerable items)
         {
+            if (items == null)
+            {
+                return;
+            }
+
             if (items is INotifyCollectionChanged)
             {
+                // ReSharper disable once PossibleMultipleEnumeration
                 ObserveValues(items);
             }
             else
             {
+                // ReSharper disable once PossibleMultipleEnumeration
                 ReplaceValues(items);
+            }
+
+            // ReSharper disable once PossibleMultipleEnumeration
+            var valuesNow = items.Cast<object>().ToArray();
+            if (valuesNow.Any())
+            {
+                _paragraph.Inlines.Remove(_promptInline);
+
+                AddOutputs(valuesNow);
+
+                _paragraph.Inlines.Add(_promptInline);
+                CaretPosition = CaretPosition.DocumentEnd;
             }
         }
 
@@ -362,12 +408,6 @@
 
             _notifyChanged = notifyChanged;
             _notifyChanged.CollectionChanged += HandleValuesChanged;
-
-            var valuesNow = values.Cast<object>().ToArray();
-            if (valuesNow.Any())
-            {
-                AddOutputs(valuesNow);
-            }
         }
 
         private void HandleValuesChanged(object sender, NotifyCollectionChangedEventArgs args)
