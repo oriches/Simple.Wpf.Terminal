@@ -196,6 +196,10 @@
             set { SetValue(ItemsMarginProperty, value); }
         }
         
+        /// <summary>
+        /// Process every key pressed when the control has focus.
+        /// </summary>
+        /// <param name="args">The key pressed arguments.</param>
         protected override void OnPreviewKeyDown(KeyEventArgs args)
         {
             base.OnPreviewKeyDown(args);
@@ -221,10 +225,7 @@
                     break;
                 case Key.Back:
                 case Key.Left:
-                {
-                    var handled = HandleCursorLeftKeys();
-                    args.Handled = handled;
-                }
+                    args.Handled = HandleCursorLeftKeys();
                 break;
             }
         }
@@ -248,7 +249,7 @@
             }
 
             var terminal = ((Terminal)d);
-            terminal.ProcessItems((IEnumerable)args.NewValue);
+            terminal.HandleItemsSourceChanged((IEnumerable)args.NewValue);
         }
 
         private static void OnPromptChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -259,18 +260,9 @@
             }
 
             var terminal = ((Terminal)d);
-            if (terminal._promptInline != null)
-            {
-                var newPrompt = string.Empty;
-                if (args.NewValue != null)
-                {
-                    newPrompt = args.NewValue.ToString();
-                }
-
-                terminal._promptInline.Text = newPrompt;
-            }
+            terminal.HandlePromptChanged((string)args.NewValue);
         }
-        
+
         private static void OnItemsMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue)
@@ -338,7 +330,7 @@
             args.Handled = true;
         }
 
-        private void ProcessItems(IEnumerable items)
+        private void HandleItemsSourceChanged(IEnumerable items)
         {
             if (items == null)
             {
@@ -375,6 +367,16 @@
                 // ReSharper disable once PossibleMultipleEnumeration
                 ReplaceItems(items);
             }
+        }
+
+        private void HandlePromptChanged(string prompt)
+        {
+            if (_promptInline == null)
+            {
+                return;
+            }
+
+            _promptInline.Text = prompt;
         }
 
         private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
