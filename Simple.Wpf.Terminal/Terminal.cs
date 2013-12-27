@@ -197,7 +197,7 @@
         }
         
         /// <summary>
-        /// Process every key pressed when the control has focus.
+        /// Processes every key pressed when the control has focus.
         /// </summary>
         /// <param name="args">The key pressed arguments.</param>
         protected override void OnPreviewKeyDown(KeyEventArgs args)
@@ -206,9 +206,8 @@
 
             switch (args.Key)
             {
-                case Key.Enter:
-                    HandleEnterKey();
-                    args.Handled = true;
+                case Key.Left:
+                    args.Handled = HandleLeftKey();
                     break;
                 case Key.PageDown:
                 case Key.PageUp:
@@ -220,13 +219,18 @@
                     break;
                 case Key.Up:
                 case Key.Down:
-                    HandleUpDownKeys(args);
-                    args.Handled = true;
+                    args.Handled = HandleUpDownKeys(args);
+                    break;
+                case Key.Delete:
+                    args.Handled = HandleDeleteKey();
                     break;
                 case Key.Back:
-                case Key.Left:
-                    args.Handled = HandleCursorLeftKeys();
-                break;
+                    args.Handled = HandleBackspaceKey();
+                    break;
+               case Key.Enter:
+                    HandleEnterKey();
+                    args.Handled = true;
+                    break;
             }
         }
 
@@ -340,9 +344,10 @@
                 return;
             }
 
-            if (items is INotifyCollectionChanged)
+            var changed = items as INotifyCollectionChanged;
+            if (changed != null)
             {
-                var notifyChanged = (INotifyCollectionChanged)items;
+                var notifyChanged = changed;
                 if (_notifyChanged != null)
                 {
                     _notifyChanged.CollectionChanged -= HandleItemsChanged;
@@ -497,11 +502,18 @@
             return (bool)value;
         }
 
-        private void HandleUpDownKeys(KeyEventArgs args)
+        private bool HandleUpDownKeys(KeyEventArgs args)
         {
+            var pos = CaretPosition.CompareTo(_promptInline.ContentEnd);
+
+            if (pos < 0)
+            {
+                return false;
+            }
+
             if (!_buffer.Any())
             {
-                return;
+                return true;
             }
 
             ClearAfterPrompt();
@@ -521,6 +533,8 @@
             }
 
             AddLine(existingLine);
+
+            return true;
         }
 
         private void HandleEnterKey()
@@ -537,27 +551,63 @@
             OnLineEntered();
         }
 
-        private bool HandleCursorLeftKeys()
+        private bool HandleBackspaceKey()
         {
             var promptEnd = _promptInline.ContentEnd;
 
             var textPointer = GetTextPointer(promptEnd, LogicalDirection.Forward);
             if (textPointer == null)
             {
-                if (CaretPosition.CompareTo(promptEnd) == 0)
+                var pos = CaretPosition.CompareTo(promptEnd);
+
+                if (pos <= 0)
                 {
                     return true;
                 }
             }
             else
             {
-                if (CaretPosition.CompareTo(textPointer) == 0)
+                var pos = CaretPosition.CompareTo(textPointer);
+                if (pos <= 0)
                 {
                     return true;
                 }
             }
 
-            return true;
+            return false;
+        }
+
+        private bool HandleLeftKey()
+        {
+            var promptEnd = _promptInline.ContentEnd;
+
+            var textPointer = GetTextPointer(promptEnd, LogicalDirection.Forward);
+            if (textPointer == null)
+            {
+                var pos = CaretPosition.CompareTo(promptEnd);
+
+                if (pos == 0)
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                var pos = CaretPosition.CompareTo(textPointer);
+                if (pos == 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool HandleDeleteKey()
+        {
+            var pos = CaretPosition.CompareTo(_promptInline.ContentEnd);
+
+            return pos < 0;
         }
 
         private void OnLineEntered()
