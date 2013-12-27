@@ -14,10 +14,10 @@
 
     /// <summary>
     /// A WPF user control which mimics a terminal\console window, you are responsible for the service
-    /// behind the control - the data to display and processing the entered line when the LineEntered event is raised.
+    /// providing the data for display and processing the entered line when the LineEntered event is raised.
     /// The data is bound via the ItemsSource dependancy property.
     /// </summary>
-    public sealed class Terminal : RichTextBox
+    public sealed class Terminal : RichTextBox, ITerminal
     {
         /// <summary>
         /// Event fired when the user presses the Enter key
