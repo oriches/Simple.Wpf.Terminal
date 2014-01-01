@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
@@ -407,6 +408,8 @@
 
         private void ReplaceItems(IEnumerable items)
         {
+            Contract.Requires(items != null);
+
             _paragraph.Inlines.Clear();
             AddItems(ConvertToEnumerable(items));
 
@@ -416,6 +419,8 @@
 
         private void AddItems(IEnumerable items)
         {
+            Contract.Requires(items != null);
+
             _paragraph.Inlines.Remove(_promptInline);
 
             foreach (var item in items.Cast<object>())
