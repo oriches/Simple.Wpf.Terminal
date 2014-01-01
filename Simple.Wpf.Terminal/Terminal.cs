@@ -108,10 +108,10 @@
             _buffer = new List<string>();
 
             _paragraph = new Paragraph
-            {
-                Margin = ItemsMargin,
-                LineHeight = ItemHeight
-            };
+                         {
+                             Margin = ItemsMargin,
+                             LineHeight = ItemHeight
+                         };
 
             _promptInline = new Run(Prompt);
             _paragraph.Inlines.Add(_promptInline);
@@ -122,6 +122,8 @@
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
+
+            ContextMenu = null;
         }
 
         /// <summary>
