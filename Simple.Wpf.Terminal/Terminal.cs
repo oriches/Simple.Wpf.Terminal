@@ -209,6 +209,9 @@
 
             switch (args.Key)
             {
+                case Key.X :
+                    args.Handled = HandleXKey();
+                    break;
                 case Key.Left:
                     args.Handled = HandleLeftKey();
                     break;
@@ -507,6 +510,11 @@
 
             var value = _isErrorPathProperty.GetValue(item, null);
             return (bool)value;
+        }
+
+        private static bool HandleXKey()
+        {
+            return Keyboard.IsKeyDown(Key.LeftCtrl);
         }
 
         private bool HandleUpDownKeys(KeyEventArgs args)
