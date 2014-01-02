@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E7765B
 		Simple.Wpf.Terminal.nupkg = Simple.Wpf.Terminal.nupkg
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Themes", "Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{3FE614AA-47AD-4A24-96D3-23A2160ABFD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{0C7FED52-E15B-468D-AEE7-AE2195BD3730}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C7FED52-E15B-468D-AEE7-AE2195BD3730}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C7FED52-E15B-468D-AEE7-AE2195BD3730}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FE614AA-47AD-4A24-96D3-23A2160ABFD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FE614AA-47AD-4A24-96D3-23A2160ABFD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FE614AA-47AD-4A24-96D3-23A2160ABFD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FE614AA-47AD-4A24-96D3-23A2160ABFD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
