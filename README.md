@@ -10,12 +10,13 @@ Examples of usage:
 ### Custom F# Interactive window in a WPF application
 ![alt text](https://raw.github.com/oriches/Simple.Wpf.Terminal/master/Readme%20Images/fsharp_repl.png "F# Interactive window")
 
+The code for this is available here - https://github.com/oriches/Simple.Wpf.FSharp.Repl
+
 ### In-app Log viewer in a WPF application
 ![alt text](https://raw.github.com/oriches/Simple.Wpf.Terminal/master/Readme%20Images/log_window.png "Log window")
 
+The code for this is available here - https://github.com/oriches/Simple.Wpf.Composition
 
-This control is being used as part of blog posts about a custom F# Interactive UI in WPF - currently work in progress.
 
-http://awkwardcoder.blogspot.co.uk/2013/12/simple-f-repl-in-wpf-part-1.html
+I'd be interested to hear about other uses :)
 
-http://awkwardcoder.blogspot.co.uk/2013/12/simple-f-repl-in-wpf-part-2.html
