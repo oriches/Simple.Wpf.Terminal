@@ -8,8 +8,6 @@ This user control does NOT actually do anything more than display data - the use
 Examples of usage:
 
 ### Custom F# Interactive window in a WPF application
-
-Inline-style: 
 ![alt text](https://raw.github.com/oriches/Simple.Wpf.Terminal/master/Readme%20Images/fsharp_repl.png "F# Interactive window")
 
 ### In-app Log viewer in a WPF application
