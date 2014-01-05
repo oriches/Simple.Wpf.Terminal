@@ -5,7 +5,7 @@ A simple console\\terminal window for use in a WPF application, this is a user c
 
 This user control does NOT actually do anything more than display data - the user control is the View (UI) in a MVVM implementation, the ViewModel would be responsible for the actual behaviour & contents of the console\\terminal window. The user control is designed to use XAML binding for all UI properties the user can configure.
 
-The control supports theming and there are a couple of 
+The control supports theming and there are a couple of example themes supplied in the Simple.Wpf.Terminal.Themes project.
 
 This control is available as a [nuget package](http://www.nuget.org/packages/Simple.Wpf.Terminal/).
 
