@@ -125,6 +125,8 @@
             DataObject.AddCopyingHandler(this, CopyCommand);
 
             ContextMenu = null;
+
+            SetResourceReference(StyleProperty, "TerminalStyle");
         }
 
         /// <summary>

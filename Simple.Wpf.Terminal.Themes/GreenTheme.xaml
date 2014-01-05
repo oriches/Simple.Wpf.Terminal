@@ -1,0 +1,24 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:terminal="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal">
+
+    <Style x:Key="TerminalStyle"
+           TargetType="{x:Type terminal:Terminal}"
+           BasedOn="{x:Null}">
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Background"
+                Value="Black" />
+        <Setter Property="Foreground"
+                Value="LawnGreen" />
+        <Setter Property="FontFamily"
+                Value="Monaco" />
+        <Setter Property="FontSize"
+                Value="11" />
+        <Setter Property="ItemsMargin"
+                Value="5" />
+        <Setter Property="ItemHeight"
+                Value="10" />
+    </Style>
+
+</ResourceDictionary>
