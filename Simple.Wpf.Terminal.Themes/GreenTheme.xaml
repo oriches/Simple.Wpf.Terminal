@@ -12,9 +12,7 @@
         <Setter Property="Foreground"
                 Value="LawnGreen" />
         <Setter Property="FontFamily"
-                Value="Monaco" />
-        <Setter Property="FontSize"
-                Value="11" />
+                Value="Lucida Console" />
         <Setter Property="ItemsMargin"
                 Value="5" />
         <Setter Property="ItemHeight"
