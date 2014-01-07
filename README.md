@@ -82,6 +82,10 @@ The code for this is available here - https://github.com/oriches/Simple.Wpf.FSha
 The XAML is shown below:
 
 ```XAML
+<ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Simple.Wpf.Terminal.Themes;component/BlueTheme.xaml" />
+</ResourceDictionary.MergedDictionaries>
+    
 <terminal:Terminal x:Name="LoggingTerminal"
 		   Margin="5"
 		   IsReadOnly="True"
