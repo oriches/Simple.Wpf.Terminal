@@ -7,7 +7,13 @@ This user control does NOT actually do anything more than display data - the use
 
 The control supports theming and there are a couple of example themes supplied in the Simple.Wpf.Terminal.Themes project.
 
-This control is available as a [nuget package](http://www.nuget.org/packages/Simple.Wpf.Terminal/).
+Currently we support the following .Net versions:
+
+Supported versions:
+
+	.NET framework 4.0 and higher,
+	
+This library is available as a nuget [package] (https://www.nuget.org/packages/Simple.Wpf.Terminal/).
 
 Examples of usage:
 
