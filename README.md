@@ -28,50 +28,50 @@ The XAML is shown below:
 
 ```XAML
 <t:Terminal x:Name="TerminalOutput"
-                               IsReadOnlyCaretVisible="False"
-                               VerticalScrollBarVisibility="Visible"
-                               Style="{DynamicResource ReplTerminalStyle}"
-                               IsReadOnly="{Binding Path=IsReadOnly, Mode=OneWay}"
-                               Prompt="{Binding Path=Prompt, Mode=OneTime}"
-                               ItemsSource="{Binding Path=Output, Mode=OneWay}"
-                               ItemDisplayPath="Value"
-                               ItemIsErrorPath="IsError">
+		   IsReadOnlyCaretVisible="False"
+		   VerticalScrollBarVisibility="Visible"
+		   Style="{DynamicResource ReplTerminalStyle}"
+		   IsReadOnly="{Binding Path=IsReadOnly, Mode=OneWay}"
+		   Prompt="{Binding Path=Prompt, Mode=OneTime}"
+		   ItemsSource="{Binding Path=Output, Mode=OneWay}"
+		   ItemDisplayPath="Value"
+		   ItemIsErrorPath="IsError">
 
-                <t:Terminal.InputBindings>
-                    <KeyBinding Command="{Binding Path=ClearCommand, Mode=OneWay}"
-                                Gesture="CTRL+E" />
-                    <KeyBinding Command="{Binding Path=ResetCommand, Mode=OneWay}"
-                                Gesture="CTRL+R" />
-                    <KeyBinding Command="{x:Null}"
-                                Gesture="CTRL+L" />
-                </t:Terminal.InputBindings>
+	<t:Terminal.InputBindings>
+		<KeyBinding Command="{Binding Path=ClearCommand, Mode=OneWay}"
+					Gesture="CTRL+E" />
+		<KeyBinding Command="{Binding Path=ResetCommand, Mode=OneWay}"
+					Gesture="CTRL+R" />
+		<KeyBinding Command="{x:Null}"
+					Gesture="CTRL+L" />
+	</t:Terminal.InputBindings>
 
-                <t:Terminal.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Clear"
-                                  InputGestureText="Ctrl+E"
-                                  Command="{Binding Path=ClearCommand, Mode=OneWay}" />
-                        <MenuItem Header="Reset"
-                                  InputGestureText="Ctrl+R"
-                                  Command="{Binding Path=ResetCommand, Mode=OneWay}" />
-                        <Separator />
-                        <MenuItem Header="Copy"
-                                  InputGestureText="Ctrl+C"
-                                  Command="ApplicationCommands.Copy" />
-                        <MenuItem Header="Paste"
-                                  InputGestureText="Ctrl+V"
-                                  Command="ApplicationCommands.Paste" />
-                    </ContextMenu>
-                </t:Terminal.ContextMenu>
+	<t:Terminal.ContextMenu>
+		<ContextMenu>
+			<MenuItem Header="Clear"
+					  InputGestureText="Ctrl+E"
+					  Command="{Binding Path=ClearCommand, Mode=OneWay}" />
+			<MenuItem Header="Reset"
+					  InputGestureText="Ctrl+R"
+					  Command="{Binding Path=ResetCommand, Mode=OneWay}" />
+			<Separator />
+			<MenuItem Header="Copy"
+					  InputGestureText="Ctrl+C"
+					  Command="ApplicationCommands.Copy" />
+			<MenuItem Header="Paste"
+					  InputGestureText="Ctrl+V"
+					  Command="ApplicationCommands.Paste" />
+		</ContextMenu>
+	</t:Terminal.ContextMenu>
 
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="LineEntered">
-                        <i:InvokeCommandAction Command="{Binding Path=ExecuteCommand, Mode=OneWay}"
-                                               CommandParameter="{Binding Path=Line, Mode=OneWay, ElementName=TerminalOutput}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
+	<i:Interaction.Triggers>
+	<i:EventTrigger EventName="LineEntered">
+		<i:InvokeCommandAction Command="{Binding Path=ExecuteCommand, Mode=OneWay}"
+							   CommandParameter="{Binding Path=Line, Mode=OneWay, ElementName=TerminalOutput}" />
+	</i:EventTrigger>
+	</i:Interaction.Triggers>
 
-            </t:Terminal>
+</t:Terminal>
 ```
 
 The code for this is available here - https://github.com/oriches/Simple.Wpf.FSharp.Repl
