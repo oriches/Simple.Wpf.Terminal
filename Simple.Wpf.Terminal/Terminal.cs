@@ -217,6 +217,8 @@
                 case Key.Left:
                     args.Handled = HandleLeftKey();
                     break;
+                case Key.Right:
+                    break;
                 case Key.PageDown:
                 case Key.PageUp:
                     args.Handled = true;
@@ -238,6 +240,9 @@
                case Key.Enter:
                     HandleEnterKey();
                     args.Handled = true;
+                    break;
+                default:
+                    args.Handled = HandleAnyOtherKey();
                     break;
             }
         }
@@ -566,6 +571,19 @@
             CaretPosition = CaretPosition.DocumentEnd;
 
             OnLineEntered();
+        }
+
+        private bool HandleAnyOtherKey()
+        {
+            var promptEnd = _promptInline.ContentEnd;
+
+            var pos = CaretPosition.CompareTo(promptEnd);
+
+            if (pos < 0)
+            {
+                return true;
+            }
+            return false;
         }
 
         private bool HandleBackspaceKey()
