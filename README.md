@@ -9,6 +9,8 @@ The control supports theming and there are a couple of example themes supplied i
 
 For more information about the releases see [Release Info] (https://github.com/oriches/Simple.Wpf.Terminal/wiki/Release-Info).
 
+For more information about the styling the control see [Style Info] (https://github.com/oriches/Simple.Wpf.Terminal/wiki/Style-Info).
+
 Currently we support the following .Net versions:
 
 Supported versions:
