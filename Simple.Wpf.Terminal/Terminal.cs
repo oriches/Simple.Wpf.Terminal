@@ -211,8 +211,10 @@
 
             switch (args.Key)
             {
-                case Key.X :
-                    args.Handled = HandleXKey();
+                case Key.X:
+                case Key.C:
+                case Key.V:
+                    args.Handled = HandleCopyKeys(args);
                     break;
                 case Key.Left:
                     args.Handled = HandleLeftKey();
@@ -340,7 +342,18 @@
 
             if (!string.IsNullOrEmpty(text))
             {
-                AddLine(text);
+                if (Selection.Start != Selection.End)
+                {
+                    Selection.Start.DeleteTextInRun(Selection.Text.Length);
+                    Selection.Start.InsertTextInRun(text);
+
+                    var selectionEnd = Selection.Start.GetPositionAtOffset(text.Length);
+                    CaretPosition = selectionEnd;
+                }
+                else
+                {
+                    AddLine(text);
+                }
             }
 
             args.CancelCommand();
@@ -519,9 +532,34 @@
             return (bool)value;
         }
 
-        private static bool HandleXKey()
+        private bool HandleCopyKeys(KeyEventArgs args)
         {
-            return Keyboard.IsKeyDown(Key.LeftCtrl);
+            if (args.Key == Key.C)
+            {
+                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                {
+                    return false;
+                }
+
+                var promptEnd = _promptInline.ContentEnd;
+
+                var pos = CaretPosition.CompareTo(promptEnd);
+                var selectionPos = Selection.Start.CompareTo(CaretPosition);
+
+                return pos < 0 || selectionPos < 0;
+            }
+            
+            if (args.Key == Key.X || args.Key == Key.V)
+            {
+                var promptEnd = _promptInline.ContentEnd;
+
+                var pos = CaretPosition.CompareTo(promptEnd);
+                var selectionPos = Selection.Start.CompareTo(CaretPosition);
+
+                return pos < 0 || selectionPos < 0;
+            }
+
+            return false;
         }
 
         private bool HandleUpDownKeys(KeyEventArgs args)
