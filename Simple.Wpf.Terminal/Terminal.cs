@@ -21,7 +21,7 @@
     public sealed class Terminal : RichTextBox, ITerminal
     {
         /// <summary>
-        /// Event fired when the user presses the Enter key
+        /// Event fired when the user presses the Enter key.
         /// </summary>
         public event EventHandler LineEntered;
 
@@ -50,8 +50,7 @@
             new PropertyMetadata(default(string), OnPromptChanged));
 
         /// <summary>
-        /// The current the editable line in the terminal, there is only one editable line in the terminal and this is at the bottom
-        /// of the content.
+        /// The current the editable line in the terminal, there is only one editable line in the terminal and this is at the bottom of the content.
         /// </summary>
         public static readonly DependencyProperty LineProperty = DependencyProperty.Register("Line",
             typeof(string),
@@ -68,9 +67,7 @@
             new PropertyMetadata(default(string), OnDisplayPathChanged));
 
         /// <summary>
-        /// The property name of the 'isError' field, optional field used to determine if the terminal output is an error for the
-        /// bound instance. The default value is false.
-        /// bound instance.
+        /// The property name of the 'isError' field, optional field used to determine if the terminal output is an error for the bound instance. The default value is false.
         /// </summary>
         public static readonly DependencyProperty ItemIsErrorPathProperty = DependencyProperty.Register("ItemIsErrorPath",
             typeof(string),
@@ -102,7 +99,7 @@
         private PropertyInfo _isErrorPathProperty;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public Terminal()
         {
@@ -118,6 +115,7 @@
             _paragraph.Inlines.Add(_promptInline);
 
             Document = new FlowDocument(_paragraph);
+            CaretPosition = Document.ContentEnd;
 
             TextChanged += (s, e) => ScrollToEnd();
 

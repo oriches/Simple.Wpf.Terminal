@@ -11,7 +11,7 @@
     public interface ITerminal
     {
         /// <summary>
-        /// Event fired when the user presses the Enter key
+        /// Event fired when the user presses the Enter key.
         /// </summary>
         event EventHandler LineEntered;
 
