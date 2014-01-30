@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -410,13 +411,21 @@
 
         private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            if (args.Action == NotifyCollectionChangedAction.Add)
+            switch (args.Action)
             {
-                AddItems(args.NewItems.Cast<object>());
-            }
-            else
-            {
-                ReplaceItems(args.NewItems);
+                case NotifyCollectionChangedAction.Add:
+                    AddItems(args.NewItems.Cast<object>());
+                    break;
+                case NotifyCollectionChangedAction.Remove:
+                    RemoveItems(args.OldItems);
+                    break;
+                case NotifyCollectionChangedAction.Reset:
+                    ReplaceItems(args.NewItems);
+                    break;
+                case NotifyCollectionChangedAction.Replace:
+                    RemoveItems(args.OldItems);
+                    AddItems(args.NewItems.Cast<object>());
+                    break;
             }
         }
 
@@ -460,6 +469,23 @@
 
             _paragraph.Inlines.Add(_promptInline);
             CaretPosition = CaretPosition.DocumentEnd;
+        }
+
+        private void RemoveItems(IEnumerable items)
+        {
+            foreach (var item in items.Cast<object>())
+            {
+                var value = ExtractValue(item);
+
+                var run = _paragraph.Inlines
+                    .Cast<Run>()
+                    .FirstOrDefault(x => x.Text == value);
+
+                if (run != null)
+                {
+                    _paragraph.Inlines.Remove(run);
+                }
+            }
         }
 
         private static IEnumerable<object> ConvertToEnumerable(object item)
