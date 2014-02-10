@@ -4,7 +4,6 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
-    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Reflection;
@@ -115,6 +114,8 @@
             _promptInline = new Run(Prompt);
             _paragraph.Inlines.Add(_promptInline);
 
+            IsUndoEnabled = false;
+
             Document = new FlowDocument(_paragraph);
             CaretPosition = Document.ContentEnd;
 
@@ -210,6 +211,9 @@
 
             switch (args.Key)
             {
+                case Key.A:
+                    args.Handled = HandleSelectAllKeys();
+                    break;
                 case Key.X:
                 case Key.C:
                 case Key.V:
@@ -253,17 +257,6 @@
             if (args.NewValue == args.OldValue)
             {
                 return;
-            }
-
-            if (args.NewValue != null && args.OldValue != null)
-            {
-                var newEnumerable = ((IEnumerable)args.NewValue).Cast<object>();
-                var oldEnumerable = ((IEnumerable)args.OldValue).Cast<object>();
-
-                if (newEnumerable.SequenceEqual(oldEnumerable))
-                {
-                    return;
-                }
             }
 
             var terminal = ((Terminal)d);
@@ -411,6 +404,8 @@
 
         private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
+            BeginChange();
+
             switch (args.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -427,6 +422,8 @@
                     AddItems(args.NewItems.Cast<object>());
                     break;
             }
+
+            EndChange();
         }
 
         private void ClearItems()
@@ -440,11 +437,15 @@
         {
             Contract.Requires(items != null);
 
+            BeginChange();
+
             _paragraph.Inlines.Clear();
             AddItems(ConvertToEnumerable(items));
 
             _paragraph.Inlines.Add(_promptInline);
             CaretPosition = CaretPosition.DocumentEnd;
+
+            EndChange();
         }
 
         private void AddItems(IEnumerable items)
@@ -585,6 +586,17 @@
 
             return false;
         }
+
+        private bool HandleSelectAllKeys()
+        {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                Selection.Select(Document.ContentStart, Document.ContentEnd);
+            }
+
+            return false;
+        }
+
 
         private bool HandleUpDownKeys(KeyEventArgs args)
         {
