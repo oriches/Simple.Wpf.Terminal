@@ -404,8 +404,6 @@
 
         private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            BeginChange();
-
             switch (args.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -415,7 +413,7 @@
                     RemoveItems(args.OldItems);
                     break;
                 case NotifyCollectionChangedAction.Reset:
-                    ReplaceItems(args.NewItems);
+                    ReplaceItems((IEnumerable)sender);
                     break;
                 case NotifyCollectionChangedAction.Replace:
                     RemoveItems(args.OldItems);
@@ -428,9 +426,13 @@
 
         private void ClearItems()
         {
+            BeginChange();
+
             _paragraph.Inlines.Clear();
             _paragraph.Inlines.Add(_promptInline);
             CaretPosition = CaretPosition.DocumentEnd;
+
+            EndChange();
         }
 
         private void ReplaceItems(IEnumerable items)
@@ -452,11 +454,18 @@
         {
             Contract.Requires(items != null);
 
+            BeginChange();
+
             _paragraph.Inlines.Remove(_promptInline);
 
             foreach (var item in items.Cast<object>())
             {
                 var value = ExtractValue(item);
+                if (!value.EndsWith(Environment.NewLine))
+                {
+                    value += Environment.NewLine;
+                }
+
                 var isError = ExtractIsError(item);
 
                 var inline = new Run(value);
@@ -470,10 +479,14 @@
 
             _paragraph.Inlines.Add(_promptInline);
             CaretPosition = CaretPosition.DocumentEnd;
+
+            EndChange();
         }
 
         private void RemoveItems(IEnumerable items)
         {
+            BeginChange();
+
             foreach (var item in items.Cast<object>())
             {
                 var value = ExtractValue(item);
@@ -487,6 +500,8 @@
                     _paragraph.Inlines.Remove(run);
                 }
             }
+
+            EndChange();
         }
 
         private static IEnumerable<object> ConvertToEnumerable(object item)
@@ -592,6 +607,8 @@
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
             {
                 Selection.Select(Document.ContentStart, Document.ContentEnd);
+
+                return true;
             }
 
             return false;
