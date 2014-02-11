@@ -420,8 +420,6 @@
                     AddItems(args.NewItems.Cast<object>());
                     break;
             }
-
-            EndChange();
         }
 
         private void ClearItems()
