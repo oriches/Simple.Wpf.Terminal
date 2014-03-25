@@ -5,10 +5,12 @@
     using System.Collections.Generic;
     using System.Collections.Specialized;
     using System.Diagnostics.Contracts;
+    using System.Globalization;
     using System.Linq;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
+    using System.Windows.Data;
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
@@ -67,20 +69,12 @@
             new PropertyMetadata(default(string), OnDisplayPathChanged));
 
         /// <summary>
-        /// The property name of the 'isError' field, optional field used to determine if the terminal output is an error for the bound instance. The default value is false.
-        /// </summary>
-        public static readonly DependencyProperty ItemIsErrorPathProperty = DependencyProperty.Register("ItemIsErrorPath",
-            typeof(string),
-            typeof(Terminal),
-            new PropertyMetadata(default(string), OnIsErrorPathChanged));
-
-        /// <summary>
         /// The color of standard error messages, optional field with a default value of Red.
         /// </summary>
-        public static readonly DependencyProperty ItemErrorColorProperty = DependencyProperty.Register("ItemErrorColor",
-            typeof(Brush),
+        public static readonly DependencyProperty LineColorConverterProperty = DependencyProperty.Register("LineColorConverter",
+            typeof(IValueConverter),
             typeof(Terminal),
-            new PropertyMetadata(new SolidColorBrush(Colors.Red)));
+            new PropertyMetadata(null));
 
         /// <summary>
         /// The height of each line in the terminal window, optional field with a default value of 10.
@@ -96,7 +90,6 @@
 
         private INotifyCollectionChanged _notifyChanged;
         private PropertyInfo _displayPathProperty;
-        private PropertyInfo _isErrorPathProperty;
 
         /// <summary>
         /// Default constructor.
@@ -106,10 +99,10 @@
             _buffer = new List<string>();
 
             _paragraph = new Paragraph
-                         {
-                             Margin = ItemsMargin,
-                             LineHeight = ItemHeight
-                         };
+            {
+                Margin = ItemsMargin,
+                LineHeight = ItemHeight
+            };
 
             _promptInline = new Run(Prompt);
             _paragraph.Inlines.Add(_promptInline);
@@ -164,21 +157,12 @@
         }
 
         /// <summary>
-        /// The is error path for the bound items.
-        /// </summary>
-        public string ItemIsErrorPath
-        {
-            get { return (string)GetValue(ItemIsErrorPathProperty); }
-            set { SetValue(ItemIsErrorPathProperty, value); }
-        }
-
-        /// <summary>
         /// The error color for the bound items.
         /// </summary>
-        public Brush ItemErrorColor
+        public IValueConverter LineColorConverter
         {
-            get { return (Brush)GetValue(ItemErrorColorProperty); }
-            set { SetValue(ItemErrorColorProperty, value); }
+            get { return (IValueConverter)GetValue(LineColorConverterProperty); }
+            set { SetValue(LineColorConverterProperty, value); }
         }
 
         /// <summary>
@@ -198,7 +182,7 @@
             get { return (Thickness)GetValue(ItemsMarginProperty); }
             set { SetValue(ItemsMarginProperty, value); }
         }
-        
+
         /// <summary>
         /// Processes every key pressed when the control has focus.
         /// </summary>
@@ -240,7 +224,7 @@
                 case Key.Back:
                     args.Handled = HandleBackspaceKey();
                     break;
-               case Key.Enter:
+                case Key.Enter:
                     HandleEnterKey();
                     args.Handled = true;
                     break;
@@ -280,7 +264,7 @@
             }
 
             var terminal = ((Terminal)d);
-            terminal._paragraph.Margin = (Thickness) args.NewValue;
+            terminal._paragraph.Margin = (Thickness)args.NewValue;
         }
 
         private static void OnItemHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -293,7 +277,7 @@
             var terminal = ((Terminal)d);
             terminal._paragraph.LineHeight = (int)args.NewValue;
         }
-        
+
         private static void OnDisplayPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue)
@@ -303,17 +287,6 @@
 
             var terminal = ((Terminal)d);
             terminal._displayPathProperty = null;
-        }
-
-        private static void OnIsErrorPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-        {
-            if (args.NewValue == args.OldValue)
-            {
-                return;
-            }
-
-            var terminal = ((Terminal)d);
-            terminal._isErrorPathProperty = null;
         }
 
         private void CopyCommand(object sender, DataObjectCopyingEventArgs args)
@@ -454,6 +427,7 @@
 
             _paragraph.Inlines.Remove(_promptInline);
 
+            var lineColorConverter = LineColorConverter;
             foreach (var item in items.Cast<object>())
             {
                 var value = ExtractValue(item);
@@ -462,12 +436,10 @@
                     value += Environment.NewLine;
                 }
 
-                var isError = ExtractIsError(item);
-
                 var inline = new Run(value);
-                if (isError)
+                if (lineColorConverter != null)
                 {
-                    inline.Foreground = ItemErrorColor;
+                    inline.Foreground = (Brush)lineColorConverter.Convert(value, typeof(Brush), null, CultureInfo.InvariantCulture);
                 }
 
                 _paragraph.Inlines.Add(inline);
@@ -551,23 +523,6 @@
             return value == null ? string.Empty : value.ToString();
         }
 
-        private bool ExtractIsError(object item)
-        {
-            var isErrorPath = ItemIsErrorPath;
-            if (isErrorPath == null)
-            {
-                return false;
-            }
-
-            if (_isErrorPathProperty == null)
-            {
-                _isErrorPathProperty = item.GetType().GetProperty(isErrorPath);
-            }
-
-            var value = _isErrorPathProperty.GetValue(item, null);
-            return (bool)value;
-        }
-
         private bool HandleCopyKeys(KeyEventArgs args)
         {
             if (args.Key == Key.C)
@@ -584,7 +539,7 @@
 
                 return pos < 0 || selectionPos < 0;
             }
-            
+
             if (args.Key == Key.X || args.Key == Key.V)
             {
                 var promptEnd = _promptInline.ContentEnd;

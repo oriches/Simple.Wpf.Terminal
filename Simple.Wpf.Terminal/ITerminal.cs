@@ -3,6 +3,7 @@
     using System;
     using System.Collections;
     using System.Windows;
+    using System.Windows.Data;
     using System.Windows.Media;
 
     /// <summary>
@@ -36,14 +37,9 @@
         string ItemDisplayPath { get; set; }
 
         /// <summary>
-        /// The is error path for the bound items.
-        /// </summary>
-        string ItemIsErrorPath { get; set; }
-
-        /// <summary>
         /// The error color for the bound items.
         /// </summary>
-        Brush ItemErrorColor { get; set; }
+        IValueConverter LineColorConverter { get; set; }
 
         /// <summary>
         /// The individual line height for the bound items.

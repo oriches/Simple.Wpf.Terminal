@@ -13,8 +13,6 @@
                 Value="WhiteSmoke" />
         <Setter Property="FontFamily"
                 Value="Lucida Console" />
-        <Setter Property="ItemErrorColor"
-                Value="DarkOrange" />
         <Setter Property="ItemsMargin"
                 Value="5" />
         <Setter Property="ItemHeight"
