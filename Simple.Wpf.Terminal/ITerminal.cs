@@ -4,7 +4,6 @@
     using System.Collections;
     using System.Windows;
     using System.Windows.Data;
-    using System.Windows.Media;
 
     /// <summary>
     /// Exposes the dependancy properties and events exposed by the terminal control.

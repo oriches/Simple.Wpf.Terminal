@@ -74,7 +74,7 @@
         public static readonly DependencyProperty LineColorConverterProperty = DependencyProperty.Register("LineColorConverter",
             typeof(IValueConverter),
             typeof(Terminal),
-            new PropertyMetadata(null));
+            new PropertyMetadata(null, OnLineConverterChanged));
 
         /// <summary>
         /// The height of each line in the terminal window, optional field with a default value of 10.
@@ -234,6 +234,18 @@
             }
         }
 
+        /// <summary>
+        /// Processes style changes for the terminal.
+        /// </summary>
+        /// <param name="oldStyle">The current style applied to the terminal.</param>
+        /// <param name="newStyle">The new style to be applied to the terminal.</param>
+        protected override void OnStyleChanged(Style oldStyle, Style newStyle)
+        {
+            base.OnStyleChanged(oldStyle, newStyle);
+
+            ReplaceItems(ItemsSource);
+        }
+
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue)
@@ -287,6 +299,17 @@
 
             var terminal = ((Terminal)d);
             terminal._displayPathProperty = null;
+        }
+
+        private static void OnLineConverterChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
+        {
+            if (args.NewValue == args.OldValue)
+            {
+                return;
+            }
+
+            var terminal = ((Terminal)d);
+            terminal.HandleLineConverterChanged();
         }
 
         private void CopyCommand(object sender, DataObjectCopyingEventArgs args)
@@ -373,6 +396,11 @@
             _promptInline.Text = prompt;
         }
 
+        private void HandleLineConverterChanged()
+        {
+            ReplaceItems(ItemsSource);
+        }
+
         private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
             switch (args.Action)
@@ -427,7 +455,6 @@
 
             _paragraph.Inlines.Remove(_promptInline);
 
-            var lineColorConverter = LineColorConverter;
             foreach (var item in items.Cast<object>())
             {
                 var value = ExtractValue(item);
@@ -437,11 +464,8 @@
                 }
 
                 var inline = new Run(value);
-                if (lineColorConverter != null)
-                {
-                    inline.Foreground = (Brush)lineColorConverter.Convert(value, typeof(Brush), null, CultureInfo.InvariantCulture);
-                }
-
+                inline.Foreground = GetForegroundColor(item);
+                
                 _paragraph.Inlines.Add(inline);
             }
 
@@ -449,6 +473,16 @@
             CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
+        }
+
+        private Brush GetForegroundColor(object item)
+        {
+            if (LineColorConverter != null)
+            {
+                return (Brush)LineColorConverter.Convert(item, typeof(Brush), null, CultureInfo.InvariantCulture);
+            }
+            
+            return Foreground;
         }
 
         private void RemoveItems(IEnumerable items)
