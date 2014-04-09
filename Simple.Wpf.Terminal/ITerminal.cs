@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace Simple.Wpf.Terminal
+﻿namespace Simple.Wpf.Terminal
 {
     using System;
     using System.Collections;
+	using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Data;
 
