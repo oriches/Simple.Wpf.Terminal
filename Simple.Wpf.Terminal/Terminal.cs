@@ -18,7 +18,7 @@
     /// <summary>
     /// A WPF user control which mimics a terminal\console window, you are responsible for the service
     /// providing the data for display and processing the entered line when the LineEntered event is raised.
-    /// The data is bound via the ItemsSource dependancy property.
+    /// The data is bound via the ItemsSource dependency property.
     /// </summary>
     public sealed class Terminal : RichTextBox, ITerminal
     {
@@ -28,7 +28,7 @@
         public event EventHandler LineEntered;
 
         /// <summary>
-        /// The items to be displayed in the terminal window, e.g. an ObsrevableCollection.
+        /// The items to be displayed in the terminal window, e.g. an ObservableCollection.
         /// </summary>
         public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register("ItemsSource",
             typeof(IEnumerable),
@@ -36,6 +36,14 @@
             new PropertyMetadata(default(IEnumerable), OnItemsSourceChanged));
 
         /// <summary>
+        /// Autocompletion-strings to be traversed in terminal window when tab is pressed, e.g. an ObservableCollection.
+        /// </summary>
+        public static readonly DependencyProperty AutoCompletionsSourceProperty = DependencyProperty.Register("AutoCompletionsSource",
+            typeof(IEnumerable<string>),
+            typeof(Terminal),
+            new PropertyMetadata(default(IEnumerable<string>)));
+
+	    /// <summary>
         /// The margin around the contents of the terminal window, optional field with a default value of 0.
         /// </summary>
         public static readonly DependencyProperty ItemsMarginProperty = DependencyProperty.Register("ItemsMargin",
@@ -69,7 +77,7 @@
             new PropertyMetadata(default(string), OnDisplayPathChanged));
 
         /// <summary>
-        /// The color of standard error messages, optional field with a default value of Red.
+        /// The color converter for lines.
         /// </summary>
         public static readonly DependencyProperty LineColorConverterProperty = DependencyProperty.Register("LineColorConverter",
             typeof(IValueConverter),
@@ -87,6 +95,9 @@
         private readonly Paragraph _paragraph;
         private readonly List<string> _buffer;
         private readonly Run _promptInline;
+
+        private int _autoCompletionIndex;
+        private List<string> _currentAutoCompletionList = new List<string>();
 
         private INotifyCollectionChanged _notifyChanged;
         private PropertyInfo _displayPathProperty;
@@ -112,7 +123,11 @@
             Document = new FlowDocument(_paragraph);
             CaretPosition = Document.ContentEnd;
 
-            TextChanged += (s, e) => ScrollToEnd();
+            TextChanged += (s, e) =>
+                           {
+	                           Line = AggregateAfterPrompt();
+	                           ScrollToEnd();
+                           };
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
@@ -127,6 +142,15 @@
         {
             get { return (IEnumerable)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        /// <summary>
+        /// The bound autocompletion-strings to the terminal.
+        /// </summary>
+        public IEnumerable<string> AutoCompletionsSource
+        {
+            get { return (IEnumerable<string>)GetValue(AutoCompletionsSourceProperty); }
+            set { SetValue(AutoCompletionsSourceProperty, value); }
         }
 
         /// <summary>
@@ -191,6 +215,11 @@
         {
             base.OnPreviewKeyDown(args);
 
+            if (args.Key != Key.Tab)
+            {
+                _currentAutoCompletionList.Clear();
+            }
+
             switch (args.Key)
             {
                 case Key.A:
@@ -226,6 +255,10 @@
                     break;
                 case Key.Enter:
                     HandleEnterKey();
+                    args.Handled = true;
+                    break;
+                case Key.Tab:
+                    HandleTabKey();
                     args.Handled = true;
                     break;
                 default:
@@ -599,6 +632,24 @@
             return false;
         }
 
+        private void HandleTabKey()
+        {
+            if (!_currentAutoCompletionList.Any())
+            {
+                _currentAutoCompletionList = AutoCompletionsSource != null ? AutoCompletionsSource.ToList() : new List<string>();
+            }
+
+            if (_currentAutoCompletionList.Any())
+            {
+                if (_autoCompletionIndex >= _currentAutoCompletionList.Count)
+                {
+                    _autoCompletionIndex = 0;
+                }
+                ClearAfterPrompt();
+                AddLine(_currentAutoCompletionList[_autoCompletionIndex]);
+                _autoCompletionIndex++;
+            }
+        }
 
         private bool HandleUpDownKeys(KeyEventArgs args)
         {

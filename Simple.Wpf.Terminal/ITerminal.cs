@@ -1,4 +1,6 @@
-﻿namespace Simple.Wpf.Terminal
+﻿using System.Collections.Generic;
+
+namespace Simple.Wpf.Terminal
 {
     using System;
     using System.Collections;
@@ -19,6 +21,11 @@
         /// The bound items to the terminal.
         /// </summary>
         IEnumerable ItemsSource { get; set; }
+
+        /// <summary>
+        /// Bound autocompletion strings to the terminal.
+        /// </summary>
+        IEnumerable<string> AutoCompletionsSource { get; set; }
 
         /// <summary>
         /// The prompt of the terminal.
