@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+	using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Data;
 
@@ -19,6 +20,11 @@
         /// The bound items to the terminal.
         /// </summary>
         IEnumerable ItemsSource { get; set; }
+
+        /// <summary>
+        /// Bound autocompletion strings to the terminal.
+        /// </summary>
+        IEnumerable<string> AutoCompletionsSource { get; set; }
 
         /// <summary>
         /// The prompt of the terminal.
