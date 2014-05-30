@@ -702,15 +702,15 @@
 
         private bool HandleAnyOtherKey()
         {
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+            {
+                return false;
+            }
+
             var promptEnd = _promptInline.ContentEnd;
 
             var pos = CaretPosition.CompareTo(promptEnd);
-
-            if (pos < 0)
-            {
-                return true;
-            }
-            return false;
+            return pos < 0;
         }
 
         private bool HandleBackspaceKey()
