@@ -4,6 +4,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.Specialized;
+    using System.Diagnostics;
     using System.Diagnostics.Contracts;
     using System.Globalization;
     using System.Linq;
@@ -796,6 +797,30 @@
         {
             var inlineList = _paragraph.Inlines.ToList();
             var promptIndex = inlineList.IndexOf(_promptInline);
+
+            Debug.WriteLine("line count = " + inlineList.Count());
+            Debug.WriteLine("prompt line index = " + promptIndex);
+
+            var runs = inlineList.Cast<Run>().ToArray();
+            for (var i = 0; i < runs.Count(); i++)
+            {
+                var run = runs[i];
+                var text = run.Text;
+
+
+                var outputText = "line[" + i + "] =" + run.Text;
+                if (text.EndsWith(Environment.NewLine))
+                {
+                    Debug.Write(outputText);
+                }
+                else
+                {
+                    Debug.WriteLine(outputText); 
+                }
+            }
+
+            Debug.WriteLine(string.Empty);
+            Debug.WriteLine(string.Empty);
 
             return inlineList.Where((x, i) => i > promptIndex)
                 .Cast<Run>()
