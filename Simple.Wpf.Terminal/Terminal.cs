@@ -1,4 +1,4 @@
-﻿namespace Simple.Wpf.Terminal
+namespace Simple.Wpf.Terminal
 {
     using System;
     using System.Collections;
@@ -483,6 +483,11 @@
 
         private void AddItems(IEnumerable items)
         {
+            Debug.WriteLine("AddItems");
+            Debug.WriteLine("count = " + items.Cast<object>().Count());
+            Debug.WriteLine("last item = " + items.Cast<object>().Last());
+            Debug.WriteLine("");
+
             Contract.Requires(items != null);
 
             BeginChange();
@@ -798,8 +803,8 @@
             var inlineList = _paragraph.Inlines.ToList();
             var promptIndex = inlineList.IndexOf(_promptInline);
 
-            Debug.WriteLine("line count = " + inlineList.Count());
-            Debug.WriteLine("prompt line index = " + promptIndex);
+            Debug.WriteLine("inline count = " + inlineList.Count());
+            Debug.WriteLine("prompt inline index = " + promptIndex);
 
             var runs = inlineList.Cast<Run>().ToArray();
             for (var i = 0; i < runs.Count(); i++)
@@ -808,14 +813,14 @@
                 var text = run.Text;
 
 
-                var outputText = "line[" + i + "] =" + run.Text;
+                var outputText = "inline[" + i + "] =" + run.Text;
                 if (text.EndsWith(Environment.NewLine))
                 {
-                    Debug.Write(outputText);
+                    Debug.Write("Y: " + outputText);
                 }
                 else
                 {
-                    Debug.WriteLine(outputText); 
+                    Debug.WriteLine("N: " + outputText); 
                 }
             }
 
