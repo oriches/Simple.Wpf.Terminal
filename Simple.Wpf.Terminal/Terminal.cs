@@ -117,7 +117,8 @@ namespace Simple.Wpf.Terminal
             };
 
             _promptInline = new Run(Prompt);
-            _paragraph.Inlines.Add(_promptInline);
+            //_paragraph.Inlines.Add(_promptInline);
+            AddPrompt();
 
             IsUndoEnabled = false;
 
@@ -135,7 +136,7 @@ namespace Simple.Wpf.Terminal
 
             SetResourceReference(StyleProperty, "TerminalStyle");
         }
-
+        
         /// <summary>
         /// The bound items to the terminal.
         /// </summary>
@@ -385,7 +386,8 @@ namespace Simple.Wpf.Terminal
             if (items == null)
             {
                 _paragraph.Inlines.Clear();
-                _paragraph.Inlines.Add(_promptInline);
+                //_paragraph.Inlines.Add(_promptInline);
+                AddPrompt();
 
                 return;
             }
@@ -460,7 +462,8 @@ namespace Simple.Wpf.Terminal
             BeginChange();
 
             _paragraph.Inlines.Clear();
-            _paragraph.Inlines.Add(_promptInline);
+           // _paragraph.Inlines.Add(_promptInline);
+            AddPrompt();
             CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
@@ -475,7 +478,8 @@ namespace Simple.Wpf.Terminal
             _paragraph.Inlines.Clear();
             AddItems(ConvertToEnumerable(items));
 
-            _paragraph.Inlines.Add(_promptInline);
+            //_paragraph.Inlines.Add(_promptInline);
+            AddPrompt();
             CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
@@ -508,7 +512,8 @@ namespace Simple.Wpf.Terminal
                 _paragraph.Inlines.Add(inline);
             }
 
-            _paragraph.Inlines.Add(_promptInline);
+           // _paragraph.Inlines.Add(_promptInline);
+            AddPrompt();
             CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
@@ -843,5 +848,15 @@ namespace Simple.Wpf.Terminal
                 _paragraph.Inlines.Remove(inline);
             }
         }
+
+        private void AddPrompt()
+        {
+            _paragraph.Inlines.Add(_promptInline);
+
+            // On some systems this line is not required (like mine) but on others of the same spec and same WPF framework assemblies
+            // this line is required...
+            _paragraph.Inlines.Add(new Run());
+        }
+
     }
 }
