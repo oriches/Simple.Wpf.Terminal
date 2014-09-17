@@ -117,14 +117,13 @@ namespace Simple.Wpf.Terminal
             };
 
             _promptInline = new Run(Prompt);
-            //_paragraph.Inlines.Add(_promptInline);
-            AddPrompt();
-
+            
             IsUndoEnabled = false;
 
             Document = new FlowDocument(_paragraph);
-            CaretPosition = Document.ContentEnd;
-
+            //_paragraph.Inlines.Add(_promptInline);
+            AddPrompt();
+            
             TextChanged += (s, e) =>
                            {
 	                           Line = AggregateAfterPrompt();
@@ -464,7 +463,7 @@ namespace Simple.Wpf.Terminal
             _paragraph.Inlines.Clear();
            // _paragraph.Inlines.Add(_promptInline);
             AddPrompt();
-            CaretPosition = CaretPosition.DocumentEnd;
+           // CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
         }
@@ -480,7 +479,7 @@ namespace Simple.Wpf.Terminal
 
             //_paragraph.Inlines.Add(_promptInline);
             AddPrompt();
-            CaretPosition = CaretPosition.DocumentEnd;
+            //CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
         }
@@ -514,7 +513,7 @@ namespace Simple.Wpf.Terminal
 
            // _paragraph.Inlines.Add(_promptInline);
             AddPrompt();
-            CaretPosition = CaretPosition.DocumentEnd;
+            //CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
         }
@@ -855,8 +854,10 @@ namespace Simple.Wpf.Terminal
 
             // On some systems this line is not required (like mine) but on others of the same spec and same WPF framework assemblies
             // this line is required...
-            _paragraph.Inlines.Add(new Run());
-        }
+            var runAfterPrompt = new Run();
+            _paragraph.Inlines.Add(runAfterPrompt);
 
+            CaretPosition = runAfterPrompt.ContentStart;
+        }
     }
 }
