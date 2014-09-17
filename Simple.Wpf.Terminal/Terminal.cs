@@ -115,13 +115,12 @@ namespace Simple.Wpf.Terminal
                 Margin = ItemsMargin,
                 LineHeight = ItemHeight
             };
-
-            _promptInline = new Run(Prompt);
             
             IsUndoEnabled = false;
 
+            _promptInline = new Run(Prompt);
             Document = new FlowDocument(_paragraph);
-            //_paragraph.Inlines.Add(_promptInline);
+            
             AddPrompt();
             
             TextChanged += (s, e) =>
@@ -385,7 +384,6 @@ namespace Simple.Wpf.Terminal
             if (items == null)
             {
                 _paragraph.Inlines.Clear();
-                //_paragraph.Inlines.Add(_promptInline);
                 AddPrompt();
 
                 return;
@@ -461,10 +459,9 @@ namespace Simple.Wpf.Terminal
             BeginChange();
 
             _paragraph.Inlines.Clear();
-           // _paragraph.Inlines.Add(_promptInline);
+            
             AddPrompt();
-           // CaretPosition = CaretPosition.DocumentEnd;
-
+            
             EndChange();
         }
 
@@ -475,11 +472,9 @@ namespace Simple.Wpf.Terminal
             BeginChange();
 
             _paragraph.Inlines.Clear();
+            
             AddItems(ConvertToEnumerable(items));
-
-            //_paragraph.Inlines.Add(_promptInline);
             AddPrompt();
-            //CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
         }
@@ -513,7 +508,7 @@ namespace Simple.Wpf.Terminal
 
            // _paragraph.Inlines.Add(_promptInline);
             AddPrompt();
-            //CaretPosition = CaretPosition.DocumentEnd;
+            CaretPosition = CaretPosition.DocumentEnd;
 
             EndChange();
         }
@@ -705,7 +700,7 @@ namespace Simple.Wpf.Terminal
             Line = line;
             _buffer.Insert(0, line);
 
-            CaretPosition = _paragraph.ContentEnd;
+            CaretPosition = Document.ContentEnd;
 
             OnLineEntered();
         }
@@ -794,12 +789,12 @@ namespace Simple.Wpf.Terminal
 
         private void AddLine(string line)
         {
-            CaretPosition = _paragraph.ContentEnd;
+            CaretPosition = CaretPosition.DocumentEnd;
 
             var inline = new Run(line);
             _paragraph.Inlines.Add(inline);
 
-            CaretPosition = _paragraph.ContentEnd;
+            CaretPosition = Document.ContentEnd;
         }
 
         private string AggregateAfterPrompt()
@@ -851,13 +846,9 @@ namespace Simple.Wpf.Terminal
         private void AddPrompt()
         {
             _paragraph.Inlines.Add(_promptInline);
+            _paragraph.Inlines.Add(new Run());
 
-            // On some systems this line is not required (like mine) but on others of the same spec and same WPF framework assemblies
-            // this line is required...
-//            var runAfterPrompt = new Run();
-//            _paragraph.Inlines.Add(runAfterPrompt);
-
-            CaretPosition = _paragraph.ContentEnd;
+            CaretPosition = Document.ContentEnd;
         }
     }
 }
