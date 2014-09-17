@@ -705,7 +705,7 @@ namespace Simple.Wpf.Terminal
             Line = line;
             _buffer.Insert(0, line);
 
-            CaretPosition = CaretPosition.DocumentEnd;
+            CaretPosition = _paragraph.ContentEnd;
 
             OnLineEntered();
         }
@@ -794,12 +794,12 @@ namespace Simple.Wpf.Terminal
 
         private void AddLine(string line)
         {
-            CaretPosition = CaretPosition.DocumentEnd;
+            CaretPosition = _paragraph.ContentEnd;
 
             var inline = new Run(line);
             _paragraph.Inlines.Add(inline);
 
-            CaretPosition = CaretPosition.DocumentEnd;
+            CaretPosition = _paragraph.ContentEnd;
         }
 
         private string AggregateAfterPrompt()
@@ -854,10 +854,10 @@ namespace Simple.Wpf.Terminal
 
             // On some systems this line is not required (like mine) but on others of the same spec and same WPF framework assemblies
             // this line is required...
-            var runAfterPrompt = new Run();
-            _paragraph.Inlines.Add(runAfterPrompt);
+//            var runAfterPrompt = new Run();
+//            _paragraph.Inlines.Add(runAfterPrompt);
 
-            CaretPosition = runAfterPrompt.ContentStart;
+            CaretPosition = _paragraph.ContentEnd;
         }
     }
 }
