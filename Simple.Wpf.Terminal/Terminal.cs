@@ -276,7 +276,13 @@ namespace Simple.Wpf.Terminal
         {
             base.OnStyleChanged(oldStyle, newStyle);
 
-            ReplaceItems(ItemsSource);
+            if (ItemsSource != null)
+            {
+                using (DeclareChangeBlock())
+                {
+                    ReplaceItems(ItemsSource.Cast<object>().ToArray());
+                }
+            }
         }
 
         private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -389,33 +395,36 @@ namespace Simple.Wpf.Terminal
                 return;
             }
 
-            var changed = items as INotifyCollectionChanged;
-            if (changed != null)
+            using (DeclareChangeBlock())
             {
-                var notifyChanged = changed;
-                if (_notifyChanged != null)
+                var changed = items as INotifyCollectionChanged;
+                if (changed != null)
                 {
-                    _notifyChanged.CollectionChanged -= HandleItemsChanged;
-                }
+                    var notifyChanged = changed;
+                    if (_notifyChanged != null)
+                    {
+                        _notifyChanged.CollectionChanged -= HandleItemsChanged;
+                    }
 
-                _notifyChanged = notifyChanged;
-                _notifyChanged.CollectionChanged += HandleItemsChanged;
+                    _notifyChanged = notifyChanged;
+                    _notifyChanged.CollectionChanged += HandleItemsChanged;
 
-                // ReSharper disable once PossibleMultipleEnumeration
-                var existingItems = items.Cast<object>().ToArray();
-                if (existingItems.Any())
-                {
-                    ReplaceItems(existingItems);
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    var existingItems = items.Cast<object>().ToArray();
+                    if (existingItems.Any())
+                    {
+                        ReplaceItems(existingItems);
+                    }
+                    else
+                    {
+                        ClearItems();
+                    }
                 }
                 else
                 {
-                    ClearItems();
+                    // ReSharper disable once PossibleMultipleEnumeration
+                    ReplaceItems(ItemsSource.Cast<object>().ToArray());
                 }
-            }
-            else
-            {
-                // ReSharper disable once PossibleMultipleEnumeration
-                ReplaceItems(items);
             }
         }
 
@@ -431,86 +440,78 @@ namespace Simple.Wpf.Terminal
 
         private void HandleLineConverterChanged()
         {
-            ReplaceItems(ItemsSource);
+            using (DeclareChangeBlock())
+            {
+                foreach (var run in _paragraph.Inlines
+                    .Where(x => x is Run)
+                    .Cast<Run>())
+                {
+                    run.Foreground = GetForegroundColor(run.Text);
+                }
+            }
         }
 
         private void HandleItemsChanged(object sender, NotifyCollectionChangedEventArgs args)
         {
-            switch (args.Action)
+            using (DeclareChangeBlock())
             {
-                case NotifyCollectionChangedAction.Add:
-                    AddItems(args.NewItems.Cast<object>());
-                    break;
-                case NotifyCollectionChangedAction.Remove:
-                    RemoveItems(args.OldItems);
-                    break;
-                case NotifyCollectionChangedAction.Reset:
-                    ReplaceItems((IEnumerable)sender);
-                    break;
-                case NotifyCollectionChangedAction.Replace:
-                    RemoveItems(args.OldItems);
-                    AddItems(args.NewItems.Cast<object>());
-                    break;
+                switch (args.Action)
+                {
+                    case NotifyCollectionChangedAction.Add:
+                        AddItems(args.NewItems.Cast<object>().ToArray());
+                        break;
+                    case NotifyCollectionChangedAction.Remove:
+                        RemoveItems(args.OldItems.Cast<object>().ToArray());
+                        break;
+                    case NotifyCollectionChangedAction.Reset:
+                        ReplaceItems(((IEnumerable) sender).Cast<object>().ToArray());
+                        break;
+                    case NotifyCollectionChangedAction.Replace:
+                        RemoveItems(args.OldItems.Cast<object>().ToArray());
+                        AddItems(args.NewItems.Cast<object>().ToArray());
+                        break;
+                }
             }
         }
 
         private void ClearItems()
         {
-            BeginChange();
-
             _paragraph.Inlines.Clear();
             
             AddPrompt();
-            
-            EndChange();
         }
 
-        private void ReplaceItems(IEnumerable items)
+        private void ReplaceItems(object[] items)
         {
             Contract.Requires(items != null);
-
-            BeginChange();
 
             _paragraph.Inlines.Clear();
             
-            AddItems(ConvertToEnumerable(items));
-            AddPrompt();
-
-            EndChange();
+            AddItems(items);
         }
 
-        private void AddItems(IEnumerable items)
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        private void AddItems(object[] items)
         {
-            Debug.WriteLine("AddItems");
-            Debug.WriteLine("count = " + items.Cast<object>().Count());
-            Debug.WriteLine("last item = " + items.Cast<object>().Last());
-            Debug.WriteLine("");
-
             Contract.Requires(items != null);
-
-            BeginChange();
-
+            
             _paragraph.Inlines.Remove(_promptInline);
 
-            foreach (var item in items.Cast<object>())
+            var inlines = items.SelectMany(x =>
             {
-                var value = ExtractValue(item);
-                if (!value.EndsWith(Environment.NewLine))
-                {
-                    value += Environment.NewLine;
-                }
-
-                var inline = new Run(value);
-                inline.Foreground = GetForegroundColor(item);
                 
-                _paragraph.Inlines.Add(inline);
-            }
+                var value = ExtractValue(x);
+                return new Inline[]
+                {
+                    new Run(value) { Foreground = GetForegroundColor(x) },
+                    new LineBreak()
+                };
+            }).ToArray();
 
-           // _paragraph.Inlines.Add(_promptInline);
+            _paragraph.Inlines.AddRange(inlines);
+
             AddPrompt();
             CaretPosition = CaretPosition.DocumentEnd;
-
-            EndChange();
         }
 
         private Brush GetForegroundColor(object item)
@@ -523,15 +524,15 @@ namespace Simple.Wpf.Terminal
             return Foreground;
         }
 
-        private void RemoveItems(IEnumerable items)
+        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        private void RemoveItems(object[] items)
         {
-            BeginChange();
-
-            foreach (var item in items.Cast<object>())
+            foreach (var item in items)
             {
                 var value = ExtractValue(item);
 
                 var run = _paragraph.Inlines
+                    .Where(x => x is Run)
                     .Cast<Run>()
                     .FirstOrDefault(x => x.Text == value);
 
@@ -540,22 +541,8 @@ namespace Simple.Wpf.Terminal
                     _paragraph.Inlines.Remove(run);
                 }
             }
-
-            EndChange();
         }
-
-        private static IEnumerable<object> ConvertToEnumerable(object item)
-        {
-            try
-            {
-                return item == null ? Enumerable.Empty<object>() : ((IEnumerable)item).Cast<object>();
-            }
-            catch (Exception)
-            {
-                return Enumerable.Empty<object>();
-            }
-        }
-
+        
         private static TextPointer GetTextPointer(TextPointer textPointer, LogicalDirection direction)
         {
             var currentTextPointer = textPointer;
@@ -801,32 +788,9 @@ namespace Simple.Wpf.Terminal
         {
             var inlineList = _paragraph.Inlines.ToList();
             var promptIndex = inlineList.IndexOf(_promptInline);
-
-            Debug.WriteLine("inline count = " + inlineList.Count());
-            Debug.WriteLine("prompt inline index = " + promptIndex);
-
-            var runs = inlineList.Cast<Run>().ToArray();
-            for (var i = 0; i < runs.Count(); i++)
-            {
-                var run = runs[i];
-                var text = run.Text;
-
-
-                var outputText = "inline[" + i + "] =" + run.Text;
-                if (text.EndsWith(Environment.NewLine))
-                {
-                    Debug.Write("Y: " + outputText);
-                }
-                else
-                {
-                    Debug.WriteLine("N: " + outputText); 
-                }
-            }
-
-            Debug.WriteLine(string.Empty);
-            Debug.WriteLine(string.Empty);
-
+            
             return inlineList.Where((x, i) => i > promptIndex)
+                .Where(x => x is Run)
                 .Cast<Run>()
                 .Select(x => x.Text)
                 .Aggregate(string.Empty, (current, part) => current + part);
