@@ -499,13 +499,19 @@ namespace Simple.Wpf.Terminal
 
             var inlines = items.SelectMany(x =>
             {
-                
                 var value = ExtractValue(x);
-                return new Inline[]
+
+                var newInlines = new List<Inline>();
+                using (var reader = new System.IO.StringReader(value))
                 {
-                    new Run(value) { Foreground = GetForegroundColor(x) },
-                    new LineBreak()
-                };
+                    var line = reader.ReadLine();
+                    
+                    newInlines.Add(new Run(line) { Foreground = GetForegroundColor(x) });
+                    newInlines.Add(new LineBreak());
+                }
+
+                return newInlines;
+
             }).ToArray();
 
             _paragraph.Inlines.AddRange(inlines);
