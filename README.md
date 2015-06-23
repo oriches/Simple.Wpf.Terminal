@@ -77,7 +77,7 @@ The XAML is shown below:
 ```
 An example of the Terminal Style (ReplTerminalStyle) is shown below and is available at the link below the example:
 
-```
+```XAML
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:terminal="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal"
