@@ -75,6 +75,41 @@ The XAML is shown below:
 
 </t:Terminal>
 ```
+An example of the Terminal Style (ReplTerminalStyle) is shown below and is available at the link below the example:
+
+```
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:terminal="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal"
+                    xmlns:ui="clr-namespace:Simple.Wpf.FSharp.Repl.UI;assembly=Simple.Wpf.FSharp.Repl">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Simple.Wpf.FSharp.Repl;component/UI/DefaultTheme.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <ui:LineColorConverter x:Key="LineColorConverter"
+                           Normal="DeepSkyBlue"
+                           Error="Red"/>
+
+    <Style x:Key="ReplTerminalStyle"
+           TargetType="{x:Type terminal:Terminal}"
+           BasedOn="{x:Null}">
+        <Setter Property="BorderThickness"
+                Value="0" />
+        <Setter Property="Background"
+                Value="Black" />
+        <Setter Property="Foreground"
+                Value="DeepSkyBlue" />
+        <Setter Property="LineColorConverter"
+                Value="{StaticResource LineColorConverter}" />
+        <Setter Property="ItemsMargin"
+                Value="5" />
+        <Setter Property="ItemHeight"
+                Value="10" />
+    </Style>
+
+</ResourceDictionary>
+```
 
 The code for this is available here - https://github.com/oriches/Simple.Wpf.FSharp.Repl
 
