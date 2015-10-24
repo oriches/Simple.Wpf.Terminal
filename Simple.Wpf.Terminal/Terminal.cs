@@ -627,7 +627,7 @@ namespace Simple.Wpf.Terminal
                 return true;
             }
 
-            return false;
+            return HandleAnyOtherKey();
         }
 
         private void HandleTabKey()
