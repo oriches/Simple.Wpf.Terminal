@@ -1,21 +1,21 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.Diagnostics.Contracts;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+
 namespace Simple.Wpf.Terminal
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.Collections.Specialized;
-    using System.Diagnostics;
-    using System.Diagnostics.Contracts;
-    using System.Globalization;
-    using System.Linq;
-    using System.Reflection;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Data;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
-
     /// <summary>
     /// A WPF user control which mimics a terminal\console window, you are responsible for the service
     /// providing the data for display and processing the entered line when the LineEntered event is raised.
@@ -502,7 +502,7 @@ namespace Simple.Wpf.Terminal
                 var value = ExtractValue(x);
 
                 var newInlines = new List<Inline>();
-                using (var reader = new System.IO.StringReader(value))
+                using (var reader = new StringReader(value))
                 {
                     var line = reader.ReadLine();
                     
