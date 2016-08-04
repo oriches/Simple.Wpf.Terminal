@@ -494,7 +494,9 @@ namespace Simple.Wpf.Terminal
         private void AddItems(object[] items)
         {
             Contract.Requires(items != null);
-            
+
+            var command = AggregateAfterPrompt();
+            ClearAfterPrompt();
             _paragraph.Inlines.Remove(_promptInline);
 
             var inlines = items.SelectMany(x =>
@@ -515,8 +517,8 @@ namespace Simple.Wpf.Terminal
             }).ToArray();
 
             _paragraph.Inlines.AddRange(inlines);
-
             AddPrompt();
+            _paragraph.Inlines.Add(new Run(command));
             CaretPosition = CaretPosition.DocumentEnd;
         }
 
