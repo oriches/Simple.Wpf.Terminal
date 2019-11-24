@@ -1,7 +1,7 @@
-﻿namespace Simple.Wpf.Terminal.Themes
-{
-    using System;
+﻿using System;
 
+namespace Simple.Wpf.Terminal.Themes
+{
     public sealed class IncludeThemesAssemblyAttribute : Attribute
     {
     }

@@ -1,14 +1,14 @@
-﻿namespace Simple.Wpf.Terminal.Example
-{
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
-    using System.Reflection;
-    using System.Windows.Input;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Windows.Input;
 
+namespace Simple.Wpf.Terminal.Example
+{
     public sealed class ExampleViewModel : BaseViewModel
     {
-        private ICommand _executeItemCommand;
         private readonly ObservableCollection<string> _items;
+        private ICommand _executeItemCommand;
 
         public ExampleViewModel()
         {
@@ -16,9 +16,7 @@
 
             var executingAssembly = Assembly.GetExecutingAssembly();
             foreach (var assembly in executingAssembly.GetReferencedAssemblies())
-            {
-               _items.Add("Referenced assembly: " + assembly.FullName);
-            }
+                _items.Add("Referenced assembly: " + assembly.FullName);
 
             _items.Add(string.Empty);
             _items.Add(string.Empty);
@@ -28,22 +26,13 @@
             _executeItemCommand = new RelayCommand<string>(AddItem, x => true);
         }
 
-        public IEnumerable<string> Items
-        {
-            get { return _items; }
-        }
+        public IEnumerable<string> Items => _items;
 
         public ICommand ExecuteItemCommand
         {
-            get
-            {
-                return _executeItemCommand;
-            }
+            get => _executeItemCommand;
 
-            set
-            {
-                SetPropertyAndNotify(ref _executeItemCommand, value, "ExecuteItemCommand");
-            }
+            set => SetPropertyAndNotify(ref _executeItemCommand, value, "ExecuteItemCommand");
         }
 
         private void AddItem(string item)

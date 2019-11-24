@@ -1,7 +1,7 @@
-﻿namespace Simple.Wpf.Terminal.Example
-{
-    using System.Windows.Input;
+﻿using System.Windows.Input;
 
+namespace Simple.Wpf.Terminal.Example
+{
     public interface IRelayCommand<T> : ICommand
     {
     }

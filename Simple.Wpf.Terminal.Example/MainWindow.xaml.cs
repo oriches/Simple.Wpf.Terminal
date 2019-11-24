@@ -1,7 +1,7 @@
-﻿namespace Simple.Wpf.Terminal.Example
-{
-    using System.Windows;
+﻿using System.Windows;
 
+namespace Simple.Wpf.Terminal.Example
+{
     public partial class MainWindow : Window
     {
         public MainWindow()

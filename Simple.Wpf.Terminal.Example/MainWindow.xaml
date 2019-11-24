@@ -13,7 +13,7 @@
                     IsReadOnly="false"
                     Prompt=">"
                     ItemsSource="{Binding Path=Items, Mode=OneWay}">
-           
+
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="LineEntered">
                     <i:InvokeCommandAction Command="{Binding Path=ExecuteItemCommand, Mode=OneWay}"
