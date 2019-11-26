@@ -15,7 +15,7 @@ Currently we support the following .Net versions:
 
 Supported versions:
 
-	.NET framework 4.0 and higher,
+	.NET framework 4.8 and higher,
 	
 This library is available as a nuget [package] (https://www.nuget.org/packages/Simple.Wpf.Terminal/).
 
