@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Data;
 
-namespace Simple.Wpf.Terminal
+namespace Simple.Wpf.Terminal.Common
 {
     /// <summary>
-    ///     Exposes the dependancy properties and events exposed by the terminal control.
+    ///     Exposes the dependency properties and events exposed by the terminal control.
     /// </summary>
     public interface ITerminal
     {
@@ -17,7 +15,7 @@ namespace Simple.Wpf.Terminal
         IEnumerable ItemsSource { get; set; }
 
         /// <summary>
-        ///     Bound autocompletion strings to the terminal.
+        ///     Bound auto completion strings to the terminal.
         /// </summary>
         IEnumerable<string> AutoCompletionsSource { get; set; }
 
@@ -35,21 +33,6 @@ namespace Simple.Wpf.Terminal
         ///     The display path for the bound items.
         /// </summary>
         string ItemDisplayPath { get; set; }
-
-        /// <summary>
-        ///     The error color for the bound items.
-        /// </summary>
-        IValueConverter LineColorConverter { get; set; }
-
-        /// <summary>
-        ///     The individual line height for the bound items.
-        /// </summary>
-        int ItemHeight { get; set; }
-
-        /// <summary>
-        ///     The margin around the bound items.
-        /// </summary>
-        Thickness ItemsMargin { get; set; }
 
         /// <summary>
         ///     Event fired when the user presses the Enter key.

@@ -10,7 +10,7 @@ namespace Simple.Wpf.Terminal.Example
         protected virtual void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         protected virtual bool SetPropertyAndNotify<T>(ref T existingValue, T newValue, string propertyName = null)
@@ -19,7 +19,7 @@ namespace Simple.Wpf.Terminal.Example
 
             existingValue = newValue;
             var handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             return true;
         }

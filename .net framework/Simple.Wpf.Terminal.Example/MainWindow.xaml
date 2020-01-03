@@ -1,0 +1,32 @@
+﻿<Window x:Class="Simple.Wpf.Terminal.Example.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:e="clr-namespace:Simple.Wpf.Terminal.Example"
+        xmlns:t="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        Width="600"
+        Height="200"
+        d:DataContext="{d:DesignInstance e:ExampleViewModel}">
+    <Grid>
+        <t:Terminal x:Name="TerminalOutput"
+                    IsReadOnlyCaretVisible="False"
+                    VerticalScrollBarVisibility="Visible"
+                    IsReadOnly="false"
+                    Prompt=">"
+                    ItemsSource="{Binding Path=Items, Mode=OneWay}">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="LineEntered">
+                    <i:InvokeCommandAction Command="{Binding Path=ExecuteItemCommand, Mode=OneWay}"
+                                           CommandParameter="{Binding Path=Line, Mode=OneWay, ElementName=TerminalOutput}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+
+        </t:Terminal>
+
+    </Grid>
+</Window>

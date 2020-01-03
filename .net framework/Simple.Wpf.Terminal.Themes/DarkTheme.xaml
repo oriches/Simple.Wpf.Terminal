@@ -1,9 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:terminal="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal">
+                    xmlns:t="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal">
 
     <Style x:Key="TerminalStyle"
-           TargetType="{x:Type terminal:Terminal}"
+           TargetType="{x:Type t:Terminal}"
            BasedOn="{x:Null}">
         <Setter Property="BorderThickness"
                 Value="0" />
@@ -14,9 +14,9 @@
         <Setter Property="FontFamily"
                 Value="Lucida Console" />
         <Setter Property="ItemsMargin"
-                Value="5" />
+                Value="4" />
         <Setter Property="ItemHeight"
-                Value="10" />
+                Value="8" />
     </Style>
 
 </ResourceDictionary>

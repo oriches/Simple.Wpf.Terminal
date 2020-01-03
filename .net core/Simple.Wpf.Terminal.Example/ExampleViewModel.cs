@@ -31,7 +31,6 @@ namespace Simple.Wpf.Terminal.Example
         public ICommand ExecuteItemCommand
         {
             get => _executeItemCommand;
-
             set => SetPropertyAndNotify(ref _executeItemCommand, value, "ExecuteItemCommand");
         }
 

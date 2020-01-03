@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.Diagnostics.Contracts;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace Simple.Wpf.Terminal
     ///     providing the data for display and processing the entered line when the LineEntered event is raised.
     ///     The data is bound via the ItemsSource dependency property.
     /// </summary>
-    public sealed class Terminal : RichTextBox, ITerminal
+    public sealed class Terminal : RichTextBox, ITerminalEx
     {
         /// <summary>
         ///     The items to be displayed in the terminal window, e.g. an ObservableCollection.
@@ -32,7 +31,7 @@ namespace Simple.Wpf.Terminal
             new PropertyMetadata(default(IEnumerable), OnItemsSourceChanged));
 
         /// <summary>
-        ///     Autocompletion-strings to be traversed in terminal window when tab is pressed, e.g. an ObservableCollection.
+        ///     Auto-completion-strings to be traversed in terminal window when tab is pressed, e.g. an ObservableCollection.
         /// </summary>
         public static readonly DependencyProperty AutoCompletionsSourceProperty = DependencyProperty.Register(
             "AutoCompletionsSource",
@@ -150,7 +149,7 @@ namespace Simple.Wpf.Terminal
         }
 
         /// <summary>
-        ///     The bound autocompletion-strings to the terminal.
+        ///     The bound auto-completion-strings to the terminal.
         /// </summary>
         public IEnumerable<string> AutoCompletionsSource
         {
@@ -376,8 +375,7 @@ namespace Simple.Wpf.Terminal
 
             using (DeclareChangeBlock())
             {
-                var changed = items as INotifyCollectionChanged;
-                if (changed != null)
+                if (items is INotifyCollectionChanged changed)
                 {
                     var notifyChanged = changed;
                     if (_notifyChanged != null) _notifyChanged.CollectionChanged -= HandleItemsChanged;
@@ -450,8 +448,6 @@ namespace Simple.Wpf.Terminal
 
         private void ReplaceItems(object[] items)
         {
-            Contract.Requires(items != null);
-
             _paragraph.Inlines.Clear();
 
             AddItems(items);
@@ -460,8 +456,6 @@ namespace Simple.Wpf.Terminal
         // ReSharper disable once ParameterTypeCanBeEnumerable.Local
         private void AddItems(object[] items)
         {
-            Contract.Requires(items != null);
-
             var command = AggregateAfterPrompt();
             ClearAfterPrompt();
             _paragraph.Inlines.Remove(_promptInline);
@@ -535,7 +529,7 @@ namespace Simple.Wpf.Terminal
 
             if (_displayPathProperty == null) _displayPathProperty = item.GetType().GetProperty(displayPath);
 
-            var value = _displayPathProperty.GetValue(item, null);
+            var value = _displayPathProperty?.GetValue(item, null);
             return value == null ? string.Empty : value.ToString();
         }
 
@@ -695,9 +689,7 @@ namespace Simple.Wpf.Terminal
 
         private void OnLineEntered()
         {
-            var handler = LineEntered;
-
-            if (handler != null) handler(this, EventArgs.Empty);
+            LineEntered?.Invoke(this, EventArgs.Empty);
         }
 
         private void AddLine(string line)
