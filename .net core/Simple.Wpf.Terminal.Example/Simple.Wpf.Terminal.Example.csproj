@@ -25,10 +25,4 @@
     <ProjectReference Include="..\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\.net framework\Simple.Wpf.Terminal.Example\bin\Debug\System.Windows.Interactivity.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:e="clr-namespace:Simple.Wpf.Terminal.Example"
         xmlns:t="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal"
-        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
         mc:Ignorable="d"
         Title="MainWindow"
         Height="450"
@@ -19,12 +19,12 @@
                     Prompt=">"
                     ItemsSource="{Binding Path=Items, Mode=OneWay}">
 
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="LineEntered">
-                    <i:InvokeCommandAction Command="{Binding Path=ExecuteItemCommand, Mode=OneWay}"
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="LineEntered">
+                    <b:InvokeCommandAction Command="{Binding Path=ExecuteItemCommand, Mode=OneWay}"
                                            CommandParameter="{Binding Path=Line, Mode=OneWay, ElementName=TerminalOutput}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
 
         </t:Terminal>
 
