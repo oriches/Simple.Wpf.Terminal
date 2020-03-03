@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget spec", ".nuget spec", "{E87D1C65-418A-4A2B-8CAB-029F5F455CBC}"
 	ProjectSection(SolutionItems) = preProject
-		Simple.Wpf.Terminal.nupkg = Simple.Wpf.Terminal.nupkg
+		Simple.Wpf.Terminal.nuspec = Simple.Wpf.Terminal.nuspec
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".net standard", ".net standard", "{AB972568-708C-44C0-BAE2-0709BF0F120F}"

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Simple.Wpf.Terminal</id>
+    <version>1.0</version>
+    <authors>Ollie Riches</authors>
+    <owners>Ollie Riches</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectUrl>https://github.com/oriches/Simple.Wpf.Terminal</projectUrl>
+    <description>This user control does NOT actually do anything more than display data - the user control is the View (UI) in a MVVM implementation, the ViewModel would be responsible for the actual behaviour &amp; contents of the console\terminal window. The user control is designed to use XAML binding for all UI properties the user can configure.</description>
+    <summary>A simple console\terminal window for use in a WPF application, this is a user control that will allow the user to enter a line of text (script\command) and\or display a list of items</summary>
+    <releaseNotes>Added support for .Net Core 3.1, and refactored common code into .Net Standard 2.0 library</releaseNotes>
+    <copyright>Simple.Wpf.Terminal 2020</copyright>
+    <language>en-GB</language>
+    <tags>WPF, XAML, Terminal, Console, UI Control</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.8" />
+      <group targetFramework=".NETCoreApp3.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.Common.dll" target="lib\net48\Simple.Wpf.Terminal.Common.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.dll" target="lib\net48\Simple.Wpf.Terminal.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.Themes.dll" target="lib\net48\Simple.Wpf.Terminal.Themes.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.xml" target="lib\net48\Simple.Wpf.Terminal.xml" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Common.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Common.dll" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.dll" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" />
+  </files>
+</package>
