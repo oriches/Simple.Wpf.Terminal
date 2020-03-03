@@ -17,6 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.19" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\.net standard\Simple.Wpf.Terminal.Common\Simple.Wpf.Terminal.Common.csproj" />
     <ProjectReference Include="..\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj" />
   </ItemGroup>
