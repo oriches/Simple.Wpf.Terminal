@@ -1,6 +1,6 @@
-Simple.Wpf.Terminal
-===================
+# Simple.Wpf.Terminal
 
+[![NuGet](https://img.shields.io/nuget/v/simple.wpf.terminal.svg)](https://github.com/oriches/simple.wpf.terminal)
 [![Build status](https://ci.appveyor.com/api/projects/status/q6156o3477vsss4p/branch/master?svg=true)](https://ci.appveyor.com/project/oriches/simple-wpf-terminal/branch/master)
 
 Supported versions:
