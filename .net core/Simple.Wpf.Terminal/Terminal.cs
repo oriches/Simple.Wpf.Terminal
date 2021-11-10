@@ -130,8 +130,6 @@ namespace Simple.Wpf.Terminal
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
-
-            SetResourceReference(StyleProperty, "TerminalStyle");
         }
 
         /// <summary>
@@ -209,6 +207,14 @@ namespace Simple.Wpf.Terminal
         {
             get => (Thickness) GetValue(ItemsMarginProperty);
             set => SetValue(ItemsMarginProperty, value);
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            if (Application.Current.TryFindResource(typeof(Terminal)) is Style defaultStyle)
+                Style = defaultStyle;
         }
 
         /// <summary>
