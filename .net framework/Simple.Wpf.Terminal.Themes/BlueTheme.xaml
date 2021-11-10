@@ -2,8 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:t="clr-namespace:Simple.Wpf.Terminal;assembly=Simple.Wpf.Terminal">
 
-    <Style x:Key="TerminalStyle"
-           TargetType="{x:Type t:Terminal}"
+    <Style TargetType="{x:Type t:Terminal}"
            BasedOn="{x:Null}">
         <Setter Property="BorderThickness"
                 Value="0" />

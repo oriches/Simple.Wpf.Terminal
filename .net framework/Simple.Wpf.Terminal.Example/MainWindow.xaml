@@ -12,12 +12,22 @@
         Height="200"
         d:DataContext="{d:DesignInstance e:ExampleViewModel}">
     <Grid>
+        <Grid.Resources>
+            <Style x:Key="BlueVioletTerminalStyle" TargetType="{x:Type t:Terminal}">
+                <Setter Property="Background"
+                        Value="BlueViolet" />
+                <Setter Property="Foreground"
+                        Value="White" />
+            </Style>
+        </Grid.Resources>
+        <!-- Remove the style and it will default to the theme -->
         <t:Terminal x:Name="TerminalOutput"
                     IsReadOnlyCaretVisible="False"
                     VerticalScrollBarVisibility="Visible"
                     IsReadOnly="false"
                     Prompt=">"
-                    ItemsSource="{Binding Path=Items, Mode=OneWay}">
+                    ItemsSource="{Binding Path=Items, Mode=OneWay}"
+                    Style="{StaticResource BlueVioletTerminalStyle}">
 
             <b:Interaction.Triggers>
                 <b:EventTrigger EventName="LineEntered">

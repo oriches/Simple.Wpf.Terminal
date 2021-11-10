@@ -130,10 +130,8 @@ namespace Simple.Wpf.Terminal
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
-
-            SetResourceReference(StyleProperty, "TerminalStyle");
         }
-
+        
         /// <summary>
         ///     Event fired when the user presses the Enter key.
         /// </summary>
@@ -209,6 +207,14 @@ namespace Simple.Wpf.Terminal
         {
             get => (Thickness) GetValue(ItemsMarginProperty);
             set => SetValue(ItemsMarginProperty, value);
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+
+            if (Application.Current.TryFindResource(typeof(Terminal)) is Style defaultStyle)
+                Style = defaultStyle;
         }
 
         /// <summary>
@@ -305,7 +311,8 @@ namespace Simple.Wpf.Terminal
             if (args.NewValue == args.OldValue) return;
 
             var terminal = (Terminal) d;
-            terminal._paragraph.Margin = (Thickness) args.NewValue;
+            if (terminal._paragraph != null)
+                terminal._paragraph.Margin = (Thickness) args.NewValue;
         }
 
         private static void OnItemHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
@@ -313,7 +320,8 @@ namespace Simple.Wpf.Terminal
             if (args.NewValue == args.OldValue) return;
 
             var terminal = (Terminal) d;
-            terminal._paragraph.LineHeight = (int) args.NewValue;
+            if (terminal._paragraph != null)
+                terminal._paragraph.LineHeight = (int) args.NewValue;
         }
 
         private static void OnDisplayPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)

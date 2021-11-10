@@ -103,6 +103,10 @@
       <Project>{88a9ad3b-c379-4b78-8cf5-8acd0995dd07}</Project>
       <Name>Simple.Wpf.Terminal.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj">
+      <Project>{1a275fce-f3d4-47ad-9549-a64683d0909a}</Project>
+      <Name>Simple.Wpf.Terminal.Themes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj">
       <Project>{f956185b-7111-460e-a9c9-6fe8f4e29693}</Project>
       <Name>Simple.Wpf.Terminal</Name>
