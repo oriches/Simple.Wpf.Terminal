@@ -35,6 +35,11 @@ namespace Simple.Wpf.Terminal.Common
         string ItemDisplayPath { get; set; }
 
         /// <summary>
+        ///     Automatic scroll to end of vertical scrollbar
+        /// </summary>
+        bool AutoScroll { get; set; }
+
+        /// <summary>
         ///     Event fired when the user presses the Enter key.
         /// </summary>
         event EventHandler LineEntered;

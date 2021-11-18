@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -91,16 +92,24 @@ namespace Simple.Wpf.Terminal
             typeof(Terminal),
             new PropertyMetadata(10, OnItemHeightChanged));
 
-        private readonly List<string> _buffer;
+        /// <summary>
+        ///     Automatic scroll to end of vertical scrollbar when content is added.
+        /// </summary>
+        public static readonly DependencyProperty AutoScrollProperty =
+            DependencyProperty.Register("AutoScroll",
+                typeof(bool),
+                typeof(Terminal),
+                new PropertyMetadata(true));
 
+        private readonly List<string> _buffer;
         private readonly Paragraph _paragraph;
         private readonly Run _promptInline;
 
         private int _autoCompletionIndex;
         private List<string> _currentAutoCompletionList = new List<string>();
         private PropertyInfo _displayPathProperty;
-
         private INotifyCollectionChanged _notifyChanged;
+        private ScrollBar _verticalScrollBar;
 
         /// <summary>
         ///     Default constructor.
@@ -121,17 +130,42 @@ namespace Simple.Wpf.Terminal
             Document = new FlowDocument(_paragraph);
 
             AddPrompt();
+            CaretPosition = Document.ContentEnd;
 
             TextChanged += (s, e) =>
             {
                 Line = AggregateAfterPrompt();
-                ScrollToEnd();
+                if (AutoScroll)
+                    ScrollToEnd();
+            };
+
+            SizeChanged += (s, e) =>
+            {
+                if (_verticalScrollBar != null)
+                    Document.PageWidth = ActualWidth - _verticalScrollBar.ActualWidth;
+            };
+
+            Loaded += (s, e) =>
+            {
+                _verticalScrollBar = this.GetVisualDescendents<ScrollBar>()
+                    .FirstOrDefault(scrollBar => scrollBar.Name == "PART_VerticalScrollBar");
+                if (_verticalScrollBar != null)
+                    Document.PageWidth = ActualWidth - _verticalScrollBar.ActualWidth;
             };
 
             DataObject.AddPastingHandler(this, PasteCommand);
             DataObject.AddCopyingHandler(this, CopyCommand);
         }
-        
+
+        /// <summary>
+        ///     Automatic scroll to end of vertical scrollbar
+        /// </summary>
+        public bool AutoScroll
+        {
+            get => (bool) GetValue(AutoScrollProperty);
+            set => SetValue(AutoScrollProperty, value);
+        }
+
         /// <summary>
         ///     Event fired when the user presses the Enter key.
         /// </summary>
@@ -286,7 +320,8 @@ namespace Simple.Wpf.Terminal
             if (ItemsSource != null)
                 using (DeclareChangeBlock())
                 {
-                    ReplaceItems(ItemsSource.Cast<object>().ToArray());
+                    ReplaceItems(ItemsSource.Cast<object>()
+                        .ToArray());
                 }
         }
 
@@ -377,6 +412,7 @@ namespace Simple.Wpf.Terminal
             {
                 _paragraph.Inlines.Clear();
                 AddPrompt();
+                CaretPosition = CaretPosition.DocumentEnd;
 
                 return;
             }
@@ -392,7 +428,8 @@ namespace Simple.Wpf.Terminal
                     _notifyChanged.CollectionChanged += HandleItemsChanged;
 
                     // ReSharper disable once PossibleMultipleEnumeration
-                    var existingItems = items.Cast<object>().ToArray();
+                    var existingItems = items.Cast<object>()
+                        .ToArray();
                     if (existingItems.Any())
                         ReplaceItems(existingItems);
                     else
@@ -401,7 +438,8 @@ namespace Simple.Wpf.Terminal
                 else
                 {
                     // ReSharper disable once PossibleMultipleEnumeration
-                    ReplaceItems(ItemsSource.Cast<object>().ToArray());
+                    ReplaceItems(ItemsSource.Cast<object>()
+                        .ToArray());
                 }
             }
         }
@@ -431,17 +469,22 @@ namespace Simple.Wpf.Terminal
                 switch (args.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-                        AddItems(args.NewItems.Cast<object>().ToArray());
+                        AddItems(args.NewItems.Cast<object>()
+                            .ToArray());
                         break;
                     case NotifyCollectionChangedAction.Remove:
-                        RemoveItems(args.OldItems.Cast<object>().ToArray());
+                        RemoveItems(args.OldItems.Cast<object>()
+                            .ToArray());
                         break;
                     case NotifyCollectionChangedAction.Reset:
-                        ReplaceItems(((IEnumerable) sender).Cast<object>().ToArray());
+                        ReplaceItems(((IEnumerable) sender).Cast<object>()
+                            .ToArray());
                         break;
                     case NotifyCollectionChangedAction.Replace:
-                        RemoveItems(args.OldItems.Cast<object>().ToArray());
-                        AddItems(args.NewItems.Cast<object>().ToArray());
+                        RemoveItems(args.OldItems.Cast<object>()
+                            .ToArray());
+                        AddItems(args.NewItems.Cast<object>()
+                            .ToArray());
                         break;
                 }
             }
@@ -469,25 +512,25 @@ namespace Simple.Wpf.Terminal
             _paragraph.Inlines.Remove(_promptInline);
 
             var inlines = items.SelectMany(x =>
-            {
-                var value = ExtractValue(x);
-
-                var newInlines = new List<Inline>();
-                using (var reader = new StringReader(value))
                 {
-                    var line = reader.ReadLine();
+                    var value = ExtractValue(x);
 
-                    newInlines.Add(new Run(line) {Foreground = GetForegroundColor(x)});
-                    newInlines.Add(new LineBreak());
-                }
+                    var newInlines = new List<Inline>();
+                    using (var reader = new StringReader(value))
+                    {
+                        var line = reader.ReadLine();
 
-                return newInlines;
-            }).ToArray();
+                        newInlines.Add(new Run(line) {Foreground = GetForegroundColor(x)});
+                        newInlines.Add(new LineBreak());
+                    }
+
+                    return newInlines;
+                })
+                .ToArray();
 
             _paragraph.Inlines.AddRange(inlines);
             AddPrompt();
             _paragraph.Inlines.Add(new Run(command));
-            CaretPosition = CaretPosition.DocumentEnd;
         }
 
         private Brush GetForegroundColor(object item)
@@ -535,7 +578,9 @@ namespace Simple.Wpf.Terminal
             var displayPath = ItemDisplayPath;
             if (displayPath == null) return item == null ? string.Empty : item.ToString();
 
-            if (_displayPathProperty == null) _displayPathProperty = item.GetType().GetProperty(displayPath);
+            if (_displayPathProperty == null)
+                _displayPathProperty = item.GetType()
+                    .GetProperty(displayPath);
 
             var value = _displayPathProperty?.GetValue(item, null);
             return value == null ? string.Empty : value.ToString();
@@ -736,8 +781,6 @@ namespace Simple.Wpf.Terminal
         {
             _paragraph.Inlines.Add(_promptInline);
             _paragraph.Inlines.Add(new Run());
-
-            CaretPosition = Document.ContentEnd;
         }
     }
 }

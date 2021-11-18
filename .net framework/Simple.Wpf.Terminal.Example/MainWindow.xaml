@@ -26,6 +26,7 @@
                     VerticalScrollBarVisibility="Visible"
                     IsReadOnly="false"
                     Prompt=">"
+                    AutoScroll="True"
                     ItemsSource="{Binding Path=Items, Mode=OneWay}"
                     Style="{StaticResource BlueVioletTerminalStyle}">
 
