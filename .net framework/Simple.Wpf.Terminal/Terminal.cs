@@ -251,6 +251,50 @@ namespace Simple.Wpf.Terminal
                 Style = defaultStyle;
         }
 
+        private bool HandleReadOnlyKeyUp(KeyEventArgs args)
+        {
+            if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - FontSize);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleReadOnlyKeyDown(KeyEventArgs args)
+        {
+            if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + FontSize);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleReadOnlyKeyPageUp(KeyEventArgs args)
+        {
+            if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - scrollViewer.ViewportHeight);
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HandleReadOnlyKeyPageDown(KeyEventArgs args)
+        {
+            if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
+            {
+                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + scrollViewer.ViewportHeight);
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         ///     Processes every key pressed when the control has focus.
         /// </summary>
@@ -258,6 +302,27 @@ namespace Simple.Wpf.Terminal
         protected override void OnPreviewKeyDown(KeyEventArgs args)
         {
             base.OnPreviewKeyDown(args);
+
+            if (IsReadOnly)
+            {
+                switch (args.Key)
+                {
+                    case Key.Up:
+                        args.Handled = HandleReadOnlyKeyUp(args);
+                        break;
+                    case Key.Down:
+                        args.Handled = HandleReadOnlyKeyDown(args);
+                        break;
+                    case Key.PageUp:
+                        args.Handled = HandleReadOnlyKeyPageUp(args);
+                        break;
+                    case Key.PageDown:
+                        args.Handled = HandleReadOnlyKeyPageDown(args);
+                        break;
+                }
+
+                return;
+            }
 
             if (args.Key != Key.Tab) _currentAutoCompletionList.Clear();
 
