@@ -243,6 +243,10 @@ namespace Simple.Wpf.Terminal
             set => SetValue(ItemsMarginProperty, value);
         }
 
+        /// <summary>
+        ///     Raises the Initialized event. This method is invoked whenever IsInitialized is set to true internally.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);

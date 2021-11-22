@@ -8,6 +8,12 @@ namespace Simple.Wpf.Terminal
 {
     public static class VisualTreeExtensions
     {
+        /// <summary>
+        ///     Search the Visual Tree for an Ancestor by Type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public static T GetVisualAncestor<T>(this DependencyObject d) where T : class
         {
             var item = VisualTreeHelper.GetParent(d);
@@ -21,6 +27,12 @@ namespace Simple.Wpf.Terminal
             return null;
         }
 
+        /// <summary>
+        ///     Search the Visual Tree for an Ancestor
+        /// </summary>
+        /// <param name="d"></param>
+        /// <param name="type"></param>
+        /// <returns></returns>
         public static DependencyObject GetVisualAncestor(this DependencyObject d, Type type)
         {
             var item = VisualTreeHelper.GetParent(d);
@@ -34,12 +46,24 @@ namespace Simple.Wpf.Terminal
             return null;
         }
 
+        /// <summary>
+        ///     Search the Visual Tree for a Descendent (child) by Type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject
         {
             return d.GetVisualDescendents<T>()
                 .FirstOrDefault();
         }
 
+        /// <summary>
+        ///     Search the Visual Tree for multiple Descendents (children) by Type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="d"></param>
+        /// <returns></returns>
         public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d) where T : DependencyObject
         {
             var childCount = VisualTreeHelper.GetChildrenCount(d);
