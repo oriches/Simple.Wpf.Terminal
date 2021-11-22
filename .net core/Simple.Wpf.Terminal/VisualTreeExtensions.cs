@@ -6,6 +6,9 @@ using System.Windows.Media;
 
 namespace Simple.Wpf.Terminal
 {
+    /// <summary>
+    ///     Extension methods for querying the Visual Tree
+    /// </summary>
     public static class VisualTreeExtensions
     {
         /// <summary>
