@@ -16,7 +16,7 @@
                     IsReadOnlyCaretVisible="False"
                     VerticalScrollBarVisibility="Visible"
                     IsReadOnly="false"
-                    Prompt=">"
+                    Prompt="||"
                     ItemsSource="{Binding Path=Items, Mode=OneWay}">
 
             <b:Interaction.Triggers>

@@ -103,7 +103,7 @@ namespace Simple.Wpf.Terminal
 
         private readonly List<string> _buffer;
         private readonly Paragraph _paragraph;
-        private readonly Run _promptInline;
+        private Run _promptInline;
 
         private int _autoCompletionIndex;
         private List<string> _currentAutoCompletionList = new List<string>();
@@ -126,7 +126,9 @@ namespace Simple.Wpf.Terminal
 
             IsUndoEnabled = false;
 
-            _promptInline = new Run(Prompt);
+            if (!string.IsNullOrWhiteSpace(Prompt))
+                _promptInline = new Run(Prompt);
+
             Document = new FlowDocument(_paragraph);
 
             AddPrompt();
@@ -162,7 +164,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public bool AutoScroll
         {
-            get => (bool) GetValue(AutoScrollProperty);
+            get => (bool)GetValue(AutoScrollProperty);
             set => SetValue(AutoScrollProperty, value);
         }
 
@@ -176,7 +178,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public IEnumerable ItemsSource
         {
-            get => (IEnumerable) GetValue(ItemsSourceProperty);
+            get => (IEnumerable)GetValue(ItemsSourceProperty);
             set => SetValue(ItemsSourceProperty, value);
         }
 
@@ -185,7 +187,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public IEnumerable<string> AutoCompletionsSource
         {
-            get => (IEnumerable<string>) GetValue(AutoCompletionsSourceProperty);
+            get => (IEnumerable<string>)GetValue(AutoCompletionsSourceProperty);
             set => SetValue(AutoCompletionsSourceProperty, value);
         }
 
@@ -194,7 +196,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public string Prompt
         {
-            get => (string) GetValue(PromptProperty);
+            get => (string)GetValue(PromptProperty);
             set => SetValue(PromptProperty, value);
         }
 
@@ -203,7 +205,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public string Line
         {
-            get => (string) GetValue(LineProperty);
+            get => (string)GetValue(LineProperty);
             set => SetValue(LineProperty, value);
         }
 
@@ -212,7 +214,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public string ItemDisplayPath
         {
-            get => (string) GetValue(ItemDisplayPathProperty);
+            get => (string)GetValue(ItemDisplayPathProperty);
             set => SetValue(ItemDisplayPathProperty, value);
         }
 
@@ -221,7 +223,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public IValueConverter LineColorConverter
         {
-            get => (IValueConverter) GetValue(LineColorConverterProperty);
+            get => (IValueConverter)GetValue(LineColorConverterProperty);
             set => SetValue(LineColorConverterProperty, value);
         }
 
@@ -230,7 +232,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public int ItemHeight
         {
-            get => (int) GetValue(ItemHeightProperty);
+            get => (int)GetValue(ItemHeightProperty);
             set => SetValue(ItemHeightProperty, value);
         }
 
@@ -239,7 +241,7 @@ namespace Simple.Wpf.Terminal
         /// </summary>
         public Thickness ItemsMargin
         {
-            get => (Thickness) GetValue(ItemsMarginProperty);
+            get => (Thickness)GetValue(ItemsMarginProperty);
             set => SetValue(ItemsMarginProperty, value);
         }
 
@@ -398,41 +400,41 @@ namespace Simple.Wpf.Terminal
         {
             if (args.NewValue == args.OldValue) return;
 
-            var terminal = (Terminal) d;
-            terminal.HandleItemsSourceChanged((IEnumerable) args.NewValue);
+            var terminal = (Terminal)d;
+            terminal.HandleItemsSourceChanged((IEnumerable)args.NewValue);
         }
 
         private static void OnPromptChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue) return;
 
-            var terminal = (Terminal) d;
-            terminal.HandlePromptChanged((string) args.NewValue);
+            var terminal = (Terminal)d;
+            terminal.HandlePromptChanged((string)args.NewValue);
         }
 
         private static void OnItemsMarginChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue) return;
 
-            var terminal = (Terminal) d;
+            var terminal = (Terminal)d;
             if (terminal._paragraph != null)
-                terminal._paragraph.Margin = (Thickness) args.NewValue;
+                terminal._paragraph.Margin = (Thickness)args.NewValue;
         }
 
         private static void OnItemHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue) return;
 
-            var terminal = (Terminal) d;
+            var terminal = (Terminal)d;
             if (terminal._paragraph != null)
-                terminal._paragraph.LineHeight = (int) args.NewValue;
+                terminal._paragraph.LineHeight = (int)args.NewValue;
         }
 
         private static void OnDisplayPathChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
             if (args.NewValue == args.OldValue) return;
 
-            var terminal = (Terminal) d;
+            var terminal = (Terminal)d;
             terminal._displayPathProperty = null;
         }
 
@@ -440,7 +442,7 @@ namespace Simple.Wpf.Terminal
         {
             if (args.NewValue == args.OldValue) return;
 
-            var terminal = (Terminal) d;
+            var terminal = (Terminal)d;
             terminal.HandleLineConverterChanged();
         }
 
@@ -453,7 +455,7 @@ namespace Simple.Wpf.Terminal
 
         private void PasteCommand(object sender, DataObjectPastingEventArgs args)
         {
-            var text = (string) args.DataObject.GetData(typeof(string));
+            var text = (string)args.DataObject.GetData(typeof(string));
 
             if (!string.IsNullOrEmpty(text))
             {
@@ -515,9 +517,12 @@ namespace Simple.Wpf.Terminal
 
         private void HandlePromptChanged(string prompt)
         {
-            if (_promptInline == null) return;
-
-            _promptInline.Text = prompt;
+            _promptInline = string.IsNullOrWhiteSpace(Prompt)
+                ? null
+                : new Run(Prompt)
+                {
+                    Text = prompt
+                };
         }
 
         private void HandleLineConverterChanged()
@@ -525,8 +530,8 @@ namespace Simple.Wpf.Terminal
             using (DeclareChangeBlock())
             {
                 foreach (var run in _paragraph.Inlines
-                    .Where(x => x is Run)
-                    .Cast<Run>())
+                             .Where(x => x is Run)
+                             .Cast<Run>())
                     run.Foreground = GetForegroundColor(run.Text);
             }
         }
@@ -546,7 +551,7 @@ namespace Simple.Wpf.Terminal
                             .ToArray());
                         break;
                     case NotifyCollectionChangedAction.Reset:
-                        ReplaceItems(((IEnumerable) sender).Cast<object>()
+                        ReplaceItems(((IEnumerable)sender).Cast<object>()
                             .ToArray());
                         break;
                     case NotifyCollectionChangedAction.Replace:
@@ -578,7 +583,9 @@ namespace Simple.Wpf.Terminal
         {
             var command = AggregateAfterPrompt();
             ClearAfterPrompt();
-            _paragraph.Inlines.Remove(_promptInline);
+
+            if (_promptInline != null)
+                _paragraph.Inlines.Remove(_promptInline);
 
             var inlines = items.SelectMany(x =>
                 {
@@ -589,7 +596,7 @@ namespace Simple.Wpf.Terminal
                     {
                         var line = reader.ReadLine();
 
-                        newInlines.Add(new Run(line) {Foreground = GetForegroundColor(x)});
+                        newInlines.Add(new Run(line) { Foreground = GetForegroundColor(x) });
                         newInlines.Add(new LineBreak());
                     }
 
@@ -605,7 +612,7 @@ namespace Simple.Wpf.Terminal
         private Brush GetForegroundColor(object item)
         {
             if (LineColorConverter != null)
-                return (Brush) LineColorConverter.Convert(item, typeof(Brush), null, CultureInfo.InvariantCulture);
+                return (Brush)LineColorConverter.Convert(item, typeof(Brush), null, CultureInfo.InvariantCulture);
 
             return Foreground;
         }
@@ -661,9 +668,13 @@ namespace Simple.Wpf.Terminal
             {
                 if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) return false;
 
-                var promptEnd = _promptInline.ContentEnd;
+                var pos = 0;
+                if (_promptInline != null)
+                {
+                    var promptEnd = _promptInline.ContentEnd;
+                    pos = CaretPosition.CompareTo(promptEnd);
+                }
 
-                var pos = CaretPosition.CompareTo(promptEnd);
                 var selectionPos = Selection.Start.CompareTo(CaretPosition);
 
                 return pos < 0 || selectionPos < 0;
@@ -671,9 +682,13 @@ namespace Simple.Wpf.Terminal
 
             if (args.Key == Key.X || args.Key == Key.V)
             {
-                var promptEnd = _promptInline.ContentEnd;
+                var pos = 0;
+                if (_promptInline != null)
+                {
+                    var promptEnd = _promptInline.ContentEnd;
+                    pos = CaretPosition.CompareTo(promptEnd);
+                }
 
-                var pos = CaretPosition.CompareTo(promptEnd);
                 var selectionPos = Selection.Start.CompareTo(CaretPosition);
 
                 return pos < 0 || selectionPos < 0;
@@ -711,7 +726,9 @@ namespace Simple.Wpf.Terminal
 
         private bool HandleUpDownKeys(KeyEventArgs args)
         {
-            var pos = CaretPosition.CompareTo(_promptInline.ContentEnd);
+            var pos = 0;
+            if (_promptInline != null)
+                pos = CaretPosition.CompareTo(_promptInline.ContentEnd);
 
             if (pos < 0) return false;
 
@@ -756,6 +773,7 @@ namespace Simple.Wpf.Terminal
         {
             if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)) return false;
 
+            if (string.IsNullOrWhiteSpace(Prompt)) return false;
             var promptEnd = _promptInline.ContentEnd;
 
             var pos = CaretPosition.CompareTo(promptEnd);
@@ -764,6 +782,7 @@ namespace Simple.Wpf.Terminal
 
         private bool HandleBackspaceKey()
         {
+            if (_promptInline == null) return false;
             var promptEnd = _promptInline.ContentEnd;
 
             var textPointer = GetTextPointer(promptEnd, LogicalDirection.Forward);
@@ -784,6 +803,7 @@ namespace Simple.Wpf.Terminal
 
         private bool HandleLeftKey()
         {
+            if (_promptInline == null) return false;
             var promptEnd = _promptInline.ContentEnd;
 
             var textPointer = GetTextPointer(promptEnd, LogicalDirection.Forward);
@@ -804,6 +824,7 @@ namespace Simple.Wpf.Terminal
 
         private bool HandleDeleteKey()
         {
+            if (_promptInline == null) return false;
             var pos = CaretPosition.CompareTo(_promptInline.ContentEnd);
 
             return pos < 0;
@@ -828,27 +849,37 @@ namespace Simple.Wpf.Terminal
 
         private string AggregateAfterPrompt()
         {
+            if (_promptInline == null) return string.Empty;
             var inlineList = _paragraph.Inlines.ToList();
             var promptIndex = inlineList.IndexOf(_promptInline);
 
-            return inlineList.Where((x, i) => i > promptIndex)
-                .Where(x => x is Run)
-                .Cast<Run>()
-                .Select(x => x.Text)
-                .Aggregate(string.Empty, (current, part) => current + part);
+            if (promptIndex != -1)
+                return inlineList.Where((x, i) => i > promptIndex)
+                    .Where(x => x is Run)
+                    .Cast<Run>()
+                    .Select(x => x.Text)
+                    .Aggregate(string.Empty, (current, part) => current + part);
+            return inlineList.OfType<Run>()
+                .LastOrDefault()
+                ?.Text;
         }
 
         private void ClearAfterPrompt()
         {
+            if (_promptInline == null) return;
+
             var inlineList = _paragraph.Inlines.ToList();
             var promptIndex = inlineList.IndexOf(_promptInline);
 
-            foreach (var inline in inlineList.Where((x, i) => i > promptIndex)) _paragraph.Inlines.Remove(inline);
+            if (promptIndex != -1)
+                foreach (var inline in inlineList.Where((x, i) => i > promptIndex))
+                    _paragraph.Inlines.Remove(inline);
         }
 
         private void AddPrompt()
         {
-            _paragraph.Inlines.Add(_promptInline);
+            if (_promptInline != null) _paragraph.Inlines.Add(_promptInline);
+
             _paragraph.Inlines.Add(new Run());
         }
     }

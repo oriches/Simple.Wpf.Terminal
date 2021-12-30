@@ -1,0 +1,10 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:t="clr-namespace:Simple.Wpf.Terminal">
+
+    <Style TargetType="{x:Type t:Terminal}"
+           BasedOn="{x:Null}">
+        <Setter Property="Prompt" Value=">"></Setter>
+    </Style>
+    
+</ResourceDictionary>

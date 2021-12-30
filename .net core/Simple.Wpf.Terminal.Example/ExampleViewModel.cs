@@ -19,6 +19,7 @@ namespace Simple.Wpf.Terminal.Example
                 _items.Add("Referenced assembly: " + assembly.FullName);
 
             _items.Add(string.Empty);
+            _items.Add("'>' is the default prompt, and can be overriden in an XAML style.");
             _items.Add(string.Empty);
             _items.Add("Type a line and press ENTER, it will be added to the output...");
             _items.Add(string.Empty);
