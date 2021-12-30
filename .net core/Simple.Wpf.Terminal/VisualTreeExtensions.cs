@@ -9,7 +9,7 @@ namespace Simple.Wpf.Terminal
     /// <summary>
     ///     Extension methods for querying the Visual Tree
     /// </summary>
-    public static class VisualTreeExtensions
+    internal static class VisualTreeExtensions
     {
         /// <summary>
         ///     Search the Visual Tree for an Ancestor by Type
@@ -17,7 +17,7 @@ namespace Simple.Wpf.Terminal
         /// <typeparam name="T"></typeparam>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static T GetVisualAncestor<T>(this DependencyObject d) where T : class
+        internal static T GetVisualAncestor<T>(this DependencyObject d) where T : class
         {
             var item = VisualTreeHelper.GetParent(d);
 
@@ -36,7 +36,7 @@ namespace Simple.Wpf.Terminal
         /// <param name="d"></param>
         /// <param name="type"></param>
         /// <returns></returns>
-        public static DependencyObject GetVisualAncestor(this DependencyObject d, Type type)
+        internal static DependencyObject GetVisualAncestor(this DependencyObject d, Type type)
         {
             var item = VisualTreeHelper.GetParent(d);
 
@@ -55,7 +55,7 @@ namespace Simple.Wpf.Terminal
         /// <typeparam name="T"></typeparam>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject
+        internal static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject
         {
             return d.GetVisualDescendents<T>()
                 .FirstOrDefault();
@@ -67,7 +67,7 @@ namespace Simple.Wpf.Terminal
         /// <typeparam name="T"></typeparam>
         /// <param name="d"></param>
         /// <returns></returns>
-        public static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d) where T : DependencyObject
+        internal static IEnumerable<T> GetVisualDescendents<T>(this DependencyObject d) where T : DependencyObject
         {
             var childCount = VisualTreeHelper.GetChildrenCount(d);
 
