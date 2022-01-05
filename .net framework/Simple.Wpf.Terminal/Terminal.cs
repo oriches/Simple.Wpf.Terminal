@@ -255,7 +255,7 @@ namespace Simple.Wpf.Terminal
 
             if (Style == null)
             {
-                if (Application.Current.TryFindResource(typeof(Terminal)) is Style defaultStyle)
+                if (Application.Current.TryFindResource("DefaultTerminalStyle") is Style defaultStyle)
                     Style = defaultStyle;
             }
         }

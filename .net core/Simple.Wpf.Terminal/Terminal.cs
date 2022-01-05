@@ -253,11 +253,14 @@ namespace Simple.Wpf.Terminal
         {
             base.OnInitialized(e);
 
-            if (Application.Current.TryFindResource(typeof(Terminal)) is Style defaultStyle)
-                Style = defaultStyle;
+            if (Style == null)
+            {
+                if (Application.Current.TryFindResource("DefaultTerminalStyle") is Style defaultStyle)
+                    Style = defaultStyle;
+            }
         }
 
-        private bool HandleReadOnlyKeyUp(KeyEventArgs args)
+        private bool HandleReadOnlyKeyUp()
         {
             if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
             {
@@ -268,7 +271,7 @@ namespace Simple.Wpf.Terminal
             return false;
         }
 
-        private bool HandleReadOnlyKeyDown(KeyEventArgs args)
+        private bool HandleReadOnlyKeyDown()
         {
             if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
             {
@@ -279,7 +282,7 @@ namespace Simple.Wpf.Terminal
             return false;
         }
 
-        private bool HandleReadOnlyKeyPageUp(KeyEventArgs args)
+        private bool HandleReadOnlyKeyPageUp()
         {
             if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
             {
@@ -290,7 +293,7 @@ namespace Simple.Wpf.Terminal
             return false;
         }
 
-        private bool HandleReadOnlyKeyPageDown(KeyEventArgs args)
+        private bool HandleReadOnlyKeyPageDown()
         {
             if (Template.FindName("PART_ContentHost", this) is ScrollViewer scrollViewer)
             {
@@ -314,16 +317,16 @@ namespace Simple.Wpf.Terminal
                 switch (args.Key)
                 {
                     case Key.Up:
-                        args.Handled = HandleReadOnlyKeyUp(args);
+                        args.Handled = HandleReadOnlyKeyUp();
                         break;
                     case Key.Down:
-                        args.Handled = HandleReadOnlyKeyDown(args);
+                        args.Handled = HandleReadOnlyKeyDown();
                         break;
                     case Key.PageUp:
-                        args.Handled = HandleReadOnlyKeyPageUp(args);
+                        args.Handled = HandleReadOnlyKeyPageUp();
                         break;
                     case Key.PageDown:
-                        args.Handled = HandleReadOnlyKeyPageDown(args);
+                        args.Handled = HandleReadOnlyKeyPageDown();
                         break;
                 }
 
