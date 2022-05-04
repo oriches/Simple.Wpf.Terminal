@@ -2,8 +2,6 @@ using System.Windows;
 using System.Windows.Data;
 using Simple.Wpf.Terminal.Common;
 
-#pragma warning disable 1591
-
 namespace Simple.Wpf.Terminal
 {
     public interface ITerminalEx : ITerminal

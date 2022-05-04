@@ -28,12 +28,12 @@ namespace Simple.Wpf.Terminal.Example
 
         public void Execute(object parameter)
         {
-            if (CanExecute(parameter)) _execute((T) parameter);
+            if (CanExecute(parameter)) _execute((T)parameter);
         }
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null || _canExecute((T) parameter);
+            return _canExecute == null || _canExecute((T)parameter);
         }
 
         public event EventHandler CanExecuteChanged

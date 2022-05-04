@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29519.87
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget spec", ".nuget spec", "{E87D1C65-418A-4A2B-8CAB-029F5F455CBC}"
 	ProjectSection(SolutionItems) = preProject
@@ -27,6 +27,16 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Themes", ".net core\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{D9A3D16F-1CBD-4A69-BC6F-CBFBB959908F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Example", ".net core\Simple.Wpf.Terminal.Example\Simple.Wpf.Terminal.Example.csproj", "{AC26D37A-BB93-443C-BA23-E344439E2DBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".net 5.0", ".net 5.0", "{8478E281-2AE4-45E9-A484-AEB8A382EDD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Common", ".net 5.0\Simple.Wpf.Terminal.Common\Simple.Wpf.Terminal.Common.csproj", "{5A31D99B-1A7E-47BF-8B01-D6D77C8E4A4A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal", ".net 5.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{0DAB4455-224E-4928-B6B0-CFB2717E4D9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Themes", ".net 5.0\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{4B67006E-94EE-4766-A415-23CCC357A6F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Example", ".net 5.0\Simple.Wpf.Terminal.Example\Simple.Wpf.Terminal.Example.csproj", "{70CE5FAC-30E6-4644-A5EC-8B7A60FE89E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +72,22 @@ Global
 		{AC26D37A-BB93-443C-BA23-E344439E2DBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AC26D37A-BB93-443C-BA23-E344439E2DBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AC26D37A-BB93-443C-BA23-E344439E2DBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A31D99B-1A7E-47BF-8B01-D6D77C8E4A4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A31D99B-1A7E-47BF-8B01-D6D77C8E4A4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A31D99B-1A7E-47BF-8B01-D6D77C8E4A4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A31D99B-1A7E-47BF-8B01-D6D77C8E4A4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DAB4455-224E-4928-B6B0-CFB2717E4D9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DAB4455-224E-4928-B6B0-CFB2717E4D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DAB4455-224E-4928-B6B0-CFB2717E4D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DAB4455-224E-4928-B6B0-CFB2717E4D9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B67006E-94EE-4766-A415-23CCC357A6F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B67006E-94EE-4766-A415-23CCC357A6F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B67006E-94EE-4766-A415-23CCC357A6F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B67006E-94EE-4766-A415-23CCC357A6F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70CE5FAC-30E6-4644-A5EC-8B7A60FE89E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70CE5FAC-30E6-4644-A5EC-8B7A60FE89E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70CE5FAC-30E6-4644-A5EC-8B7A60FE89E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70CE5FAC-30E6-4644-A5EC-8B7A60FE89E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +100,10 @@ Global
 		{88A9AD3B-C379-4B78-8CF5-8ACD0995DD07} = {AB972568-708C-44C0-BAE2-0709BF0F120F}
 		{D9A3D16F-1CBD-4A69-BC6F-CBFBB959908F} = {6C100376-CB4E-478D-919D-0B74AAC4DDB2}
 		{AC26D37A-BB93-443C-BA23-E344439E2DBF} = {6C100376-CB4E-478D-919D-0B74AAC4DDB2}
+		{5A31D99B-1A7E-47BF-8B01-D6D77C8E4A4A} = {8478E281-2AE4-45E9-A484-AEB8A382EDD7}
+		{0DAB4455-224E-4928-B6B0-CFB2717E4D9F} = {8478E281-2AE4-45E9-A484-AEB8A382EDD7}
+		{4B67006E-94EE-4766-A415-23CCC357A6F2} = {8478E281-2AE4-45E9-A484-AEB8A382EDD7}
+		{70CE5FAC-30E6-4644-A5EC-8B7A60FE89E7} = {8478E281-2AE4-45E9-A484-AEB8A382EDD7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A698FE8B-09D6-42DF-86DD-95B8506A335C}

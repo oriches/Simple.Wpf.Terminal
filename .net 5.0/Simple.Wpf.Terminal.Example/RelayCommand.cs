@@ -6,11 +6,11 @@ namespace Simple.Wpf.Terminal.Example
     public sealed class RelayCommand : RelayCommand<object>
     {
         public RelayCommand(Action execute)
-            : base(x => execute(), x => true)
+            : base(_ => execute(), _ => true)
         {
         }
 
-        public RelayCommand(Action execute, Func<bool> canExecute) : base(x => execute(), x => canExecute())
+        public RelayCommand(Action execute, Func<bool> canExecute) : base(_ => execute(), _ => canExecute())
         {
         }
     }

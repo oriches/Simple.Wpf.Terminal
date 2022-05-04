@@ -105,7 +105,7 @@ namespace Simple.Wpf.Terminal
         private readonly Paragraph _paragraph;
 
         private int _autoCompletionIndex;
-        private List<string> _currentAutoCompletionList = new List<string>();
+        private List<string> _currentAutoCompletionList = new();
         private PropertyInfo _displayPathProperty;
         private INotifyCollectionChanged _notifyChanged;
         private Run _promptInline;
@@ -134,20 +134,20 @@ namespace Simple.Wpf.Terminal
             AddPrompt();
             CaretPosition = Document.ContentEnd;
 
-            TextChanged += (s, e) =>
+            TextChanged += (_, _) =>
             {
                 Line = AggregateAfterPrompt();
                 if (AutoScroll)
                     ScrollToEnd();
             };
 
-            SizeChanged += (s, e) =>
+            SizeChanged += (_, _) =>
             {
                 if (_verticalScrollBar != null)
                     Document.PageWidth = ActualWidth - _verticalScrollBar.ActualWidth;
             };
 
-            Loaded += (s, e) =>
+            Loaded += (_, _) =>
             {
                 _verticalScrollBar = this.GetVisualDescendents<ScrollBar>()
                     .FirstOrDefault(scrollBar => scrollBar.Name == "PART_VerticalScrollBar");
@@ -248,10 +248,10 @@ namespace Simple.Wpf.Terminal
         /// <summary>
         ///     Raises the Initialized event. This method is invoked whenever IsInitialized is set to true internally.
         /// </summary>
-        /// <param name="args"></param>
-        protected override void OnInitialized(EventArgs args)
+        /// <param name="e"></param>
+        protected override void OnInitialized(EventArgs e)
         {
-            base.OnInitialized(args);
+            base.OnInitialized(e);
 
             if (Style == null)
                 if (Application.Current.TryFindResource("DefaultTerminalStyle") is Style defaultStyle)
@@ -544,22 +544,22 @@ namespace Simple.Wpf.Terminal
                 switch (args.Action)
                 {
                     case NotifyCollectionChangedAction.Add:
-                        AddItems(args.NewItems.Cast<object>()
-                            .ToArray());
+                        AddItems(args.NewItems?.Cast<object>()
+                            .ToArray() ?? Array.Empty<object>());
                         break;
                     case NotifyCollectionChangedAction.Remove:
-                        RemoveItems(args.OldItems.Cast<object>()
-                            .ToArray());
+                        RemoveItems(args.OldItems?.Cast<object>()
+                            .ToArray() ?? Array.Empty<object>());
                         break;
                     case NotifyCollectionChangedAction.Reset:
                         ReplaceItems(((IEnumerable)sender).Cast<object>()
                             .ToArray());
                         break;
                     case NotifyCollectionChangedAction.Replace:
-                        RemoveItems(args.OldItems.Cast<object>()
-                            .ToArray());
-                        AddItems(args.NewItems.Cast<object>()
-                            .ToArray());
+                        RemoveItems(args.OldItems?.Cast<object>()
+                            .ToArray() ?? Array.Empty<object>());
+                        AddItems(args.NewItems?.Cast<object>()
+                            .ToArray() ?? Array.Empty<object>());
                         break;
                 }
             }
@@ -593,13 +593,11 @@ namespace Simple.Wpf.Terminal
                     var value = ExtractValue(x);
 
                     var newInlines = new List<Inline>();
-                    using (var reader = new StringReader(value))
-                    {
-                        var line = reader.ReadLine();
+                    using var reader = new StringReader(value);
 
-                        newInlines.Add(new Run(line) { Foreground = GetForegroundColor(x) });
-                        newInlines.Add(new LineBreak());
-                    }
+                    var line = reader.ReadLine();
+                    newInlines.Add(new Run(line) { Foreground = GetForegroundColor(x) });
+                    newInlines.Add(new LineBreak());
 
                     return newInlines;
                 })
@@ -740,7 +738,7 @@ namespace Simple.Wpf.Terminal
             string existingLine;
             if (args.Key == Key.Down)
             {
-                existingLine = _buffer[_buffer.Count - 1];
+                existingLine = _buffer[^1];
                 _buffer.RemoveAt(_buffer.Count - 1);
                 _buffer.Insert(0, existingLine);
             }
@@ -855,7 +853,7 @@ namespace Simple.Wpf.Terminal
             var promptIndex = inlineList.IndexOf(_promptInline);
 
             if (promptIndex != -1)
-                return inlineList.Where((x, i) => i > promptIndex)
+                return inlineList.Where((_, i) => i > promptIndex)
                     .Where(x => x is Run)
                     .Cast<Run>()
                     .Select(x => x.Text)
@@ -873,7 +871,7 @@ namespace Simple.Wpf.Terminal
             var promptIndex = inlineList.IndexOf(_promptInline);
 
             if (promptIndex != -1)
-                foreach (var inline in inlineList.Where((x, i) => i > promptIndex))
+                foreach (var inline in inlineList.Where((_, i) => i > promptIndex))
                     _paragraph.Inlines.Remove(inline);
         }
 

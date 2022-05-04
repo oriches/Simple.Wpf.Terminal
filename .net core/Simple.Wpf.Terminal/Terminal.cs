@@ -103,12 +103,12 @@ namespace Simple.Wpf.Terminal
 
         private readonly List<string> _buffer;
         private readonly Paragraph _paragraph;
-        private Run _promptInline;
 
         private int _autoCompletionIndex;
         private List<string> _currentAutoCompletionList = new List<string>();
         private PropertyInfo _displayPathProperty;
         private INotifyCollectionChanged _notifyChanged;
+        private Run _promptInline;
         private ScrollBar _verticalScrollBar;
 
         /// <summary>
@@ -254,10 +254,8 @@ namespace Simple.Wpf.Terminal
             base.OnInitialized(e);
 
             if (Style == null)
-            {
                 if (Application.Current.TryFindResource("DefaultTerminalStyle") is Style defaultStyle)
                     Style = defaultStyle;
-            }
         }
 
         private bool HandleReadOnlyKeyUp()

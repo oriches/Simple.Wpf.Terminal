@@ -5,7 +5,7 @@
     <Style x:Key="DefaultTerminalStyle"
            TargetType="{x:Type t:Terminal}"
            BasedOn="{x:Null}">
-        <Setter Property="Prompt" Value=">"></Setter>
+        <Setter Property="Prompt" Value=">" />
     </Style>
-    
+
 </ResourceDictionary>

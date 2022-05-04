@@ -8,7 +8,7 @@ namespace Simple.Wpf.Terminal.Example
         {
             base.OnStartup(e);
 
-            var window = new MainWindow {DataContext = new ExampleViewModel()};
+            var window = new MainWindow { DataContext = new ExampleViewModel() };
 
             window.Show();
         }

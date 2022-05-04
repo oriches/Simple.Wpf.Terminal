@@ -7,6 +7,7 @@
     <FileVersion>1.0.0.0</FileVersion>
     <PackageProjectUrl>https://github.com/oriches/Simple.Wpf.Terminal</PackageProjectUrl>
     <IsPackable>false</IsPackable>
+    <Copyright>Copyright © 2022</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
