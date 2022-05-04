@@ -31,8 +31,8 @@
     <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.dll" />
     <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" />
     <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" />
-    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows\Simple.Wpf.Terminal.Common.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Common.dll" />
-    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows\Simple.Wpf.Terminal.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.dll" />
-    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" />    
+    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows10.0.17763.0\Simple.Wpf.Terminal.Common.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Common.dll" />
+    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows10.0.17763.0\Simple.Wpf.Terminal.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.dll" />
+    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows10.0.17763.0\Simple.Wpf.Terminal.Themes.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" />    
   </files>
 </package>
