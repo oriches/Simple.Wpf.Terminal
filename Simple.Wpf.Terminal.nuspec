@@ -23,16 +23,16 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="lib\net47\Simple.Wpf.Terminal.Common.dll" target="lib\net47\Simple.Wpf.Terminal.Common.dll" />
-    <file src="lib\net47\Simple.Wpf.Terminal.dll" target="lib\net47\Simple.Wpf.Terminal.dll" />
-    <file src="lib\net47\Simple.Wpf.Terminal.Themes.dll" target="lib\net47\Simple.Wpf.Terminal.Themes.dll" />
-    <file src="lib\net47\Simple.Wpf.Terminal.xml" target="lib\net47\Simple.Wpf.Terminal.xml" />
-    <file src="lib\net5.0-windows\Simple.Wpf.Terminal.Common.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Common.dll" />
-    <file src="lib\net5.0-windows\Simple.Wpf.Terminal.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.dll" />
-    <file src="lib\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" />
-    <file src="lib\netcoreapp3.1\Simple.Wpf.Terminal.Common.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Common.dll" />
-    <file src="lib\netcoreapp3.1\Simple.Wpf.Terminal.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.dll" />
-    <file src="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" />
-    <file src="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.Common.dll" target="lib\net47\Simple.Wpf.Terminal.Common.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.dll" target="lib\net47\Simple.Wpf.Terminal.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.Themes.dll" target="lib\net47\Simple.Wpf.Terminal.Themes.dll" />
+    <file src=".net framework\Simple.Wpf.Terminal.Themes\bin\Release\Simple.Wpf.Terminal.xml" target="lib\net47\Simple.Wpf.Terminal.xml" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Common.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Common.dll" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.dll" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.deps.json" />
+    <file src=".net core\Simple.Wpf.Terminal.Themes\bin\Release\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" target="lib\netcoreapp3.1\Simple.Wpf.Terminal.Themes.dll" />
+    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows\Simple.Wpf.Terminal.Common.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Common.dll" />
+    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows\Simple.Wpf.Terminal.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.dll" />
+    <file src=".net 5.0\Simple.Wpf.Terminal.Themes\bin\Release\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.Themes.dll" />    
   </files>
 </package>
