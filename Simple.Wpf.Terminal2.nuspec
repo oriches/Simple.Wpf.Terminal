@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Simple.Wpf.Terminal</id>
+    <version>1.0.0</version>
+    <authors>Ollie Riches</authors>
+    <owners>Ollie Riches</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/oriches/Simple.Wpf.Terminal/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/oriches/Simple.Wpf.Terminal</projectUrl>
+    <description>This user control does NOT actually do anything more than display data - the user control is the View (UI) in a MVVM implementation, the ViewModel would be responsible for the actual behaviour &amp; contents of the console\terminal window. The user control is designed to use XAML binding for all UI properties the user can configure.</description>
+    <summary>A simple console\terminal window for use in a WPF application, this is a user control that will allow the user to enter a line of text (script\command) and\or display a list of items</summary>
+    <releaseNotes>Added support for .Net 5.0</releaseNotes>
+    <copyright>Simple.Wpf.Terminal 2022</copyright>
+    <language>en-GB</language>
+    <tags>WPF, XAML, Terminal, Console, UI Control</tags>
+    <dependencies>
+      <group targetFramework=".NETFramework4.7" />
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="NETStandard.Library" version="2.0.3" />
+      </group>
+      <group targetFramework="net5.0-windows10.0.17763" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="Simple.Wpf.Terminal.dll" target="lib\net5.0-windows\Simple.Wpf.Terminal.dll" />
+  </files>
+</package>

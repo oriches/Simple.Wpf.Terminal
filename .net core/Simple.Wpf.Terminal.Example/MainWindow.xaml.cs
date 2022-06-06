@@ -1,8 +1,6 @@
-﻿using System.Windows;
-
-namespace Simple.Wpf.Terminal.Example
+﻿namespace Simple.Wpf.Terminal.Example
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         public MainWindow()
         {
