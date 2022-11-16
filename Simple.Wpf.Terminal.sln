@@ -40,13 +40,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Example
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".net 6.0", ".net 6.0", "{B1EBADA0-49EC-4E21-B67C-D731CDDBF5CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal", ".net 6.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{4F4E34B0-9E6C-408F-9D5D-392AE934ABC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal", ".net 6.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{4F4E34B0-9E6C-408F-9D5D-392AE934ABC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Common", ".net 6.0\Simple.Wpf.Terminal.Common\Simple.Wpf.Terminal.Common.csproj", "{1A81FD34-47FB-4D91-998A-5F39CA0D716D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Common", ".net 6.0\Simple.Wpf.Terminal.Common\Simple.Wpf.Terminal.Common.csproj", "{1A81FD34-47FB-4D91-998A-5F39CA0D716D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Themes", ".net 6.0\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{801CA9D9-594F-48DB-96E7-7734639297DE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Themes", ".net 6.0\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{801CA9D9-594F-48DB-96E7-7734639297DE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Simple.Wpf.Terminal.Example", ".net 6.0\Simple.Wpf.Terminal.Example\Simple.Wpf.Terminal.Example.csproj", "{DF4BB8AA-4AEF-46F3-A8F4-92236C615017}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Example", ".net 6.0\Simple.Wpf.Terminal.Example\Simple.Wpf.Terminal.Example.csproj", "{DF4BB8AA-4AEF-46F3-A8F4-92236C615017}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".net 7.0", ".net 7.0", "{49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Themes", ".net 7.0\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{7FCDAF4F-544F-414E-8543-D6505FBED39B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Example", ".net 7.0\Simple.Wpf.Terminal.Example\Simple.Wpf.Terminal.Example.csproj", "{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Common", ".net 7.0\Simple.Wpf.Terminal.Common\Simple.Wpf.Terminal.Common.csproj", "{7874E096-E448-4CE9-9B99-0F648C8DF076}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal", ".net 7.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{ECB8F890-BA26-4780-9333-60252757DD05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -114,6 +124,22 @@ Global
 		{DF4BB8AA-4AEF-46F3-A8F4-92236C615017}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF4BB8AA-4AEF-46F3-A8F4-92236C615017}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF4BB8AA-4AEF-46F3-A8F4-92236C615017}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FCDAF4F-544F-414E-8543-D6505FBED39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FCDAF4F-544F-414E-8543-D6505FBED39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FCDAF4F-544F-414E-8543-D6505FBED39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FCDAF4F-544F-414E-8543-D6505FBED39B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7874E096-E448-4CE9-9B99-0F648C8DF076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7874E096-E448-4CE9-9B99-0F648C8DF076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7874E096-E448-4CE9-9B99-0F648C8DF076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7874E096-E448-4CE9-9B99-0F648C8DF076}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECB8F890-BA26-4780-9333-60252757DD05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECB8F890-BA26-4780-9333-60252757DD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECB8F890-BA26-4780-9333-60252757DD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECB8F890-BA26-4780-9333-60252757DD05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -134,6 +160,10 @@ Global
 		{1A81FD34-47FB-4D91-998A-5F39CA0D716D} = {B1EBADA0-49EC-4E21-B67C-D731CDDBF5CF}
 		{801CA9D9-594F-48DB-96E7-7734639297DE} = {B1EBADA0-49EC-4E21-B67C-D731CDDBF5CF}
 		{DF4BB8AA-4AEF-46F3-A8F4-92236C615017} = {B1EBADA0-49EC-4E21-B67C-D731CDDBF5CF}
+		{7FCDAF4F-544F-414E-8543-D6505FBED39B} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
+		{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
+		{7874E096-E448-4CE9-9B99-0F648C8DF076} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
+		{ECB8F890-BA26-4780-9333-60252757DD05} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A698FE8B-09D6-42DF-86DD-95B8506A335C}
