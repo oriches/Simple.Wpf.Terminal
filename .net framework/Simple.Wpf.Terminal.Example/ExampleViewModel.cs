@@ -35,9 +35,6 @@ namespace Simple.Wpf.Terminal.Example
             set => SetPropertyAndNotify(ref _executeItemCommand, value, "ExecuteItemCommand");
         }
 
-        private void AddItem(string item)
-        {
-            _items.Add(item);
-        }
+        private void AddItem(string item) => _items.Add(item);
     }
 }

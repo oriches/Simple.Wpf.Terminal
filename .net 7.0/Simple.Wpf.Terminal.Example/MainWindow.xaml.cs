@@ -1,10 +1,6 @@
-﻿namespace Simple.Wpf.Terminal.Example
+﻿namespace Simple.Wpf.Terminal.Example;
+
+public partial class MainWindow
 {
-    public partial class MainWindow
-    {
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
-    }
+    public MainWindow() => InitializeComponent();
 }

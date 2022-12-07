@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+
 // ReSharper disable UnusedTypeParameter
 
 namespace Simple.Wpf.Terminal.Example

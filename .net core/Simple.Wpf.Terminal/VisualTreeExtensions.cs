@@ -55,11 +55,9 @@ namespace Simple.Wpf.Terminal
         /// <typeparam name="T"></typeparam>
         /// <param name="d"></param>
         /// <returns></returns>
-        internal static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject
-        {
-            return d.GetVisualDescendents<T>()
+        internal static T GetVisualDescendent<T>(this DependencyObject d) where T : DependencyObject =>
+            d.GetVisualDescendents<T>()
                 .FirstOrDefault();
-        }
 
         /// <summary>
         ///     Search the Visual Tree for multiple Descendents (children) by Type

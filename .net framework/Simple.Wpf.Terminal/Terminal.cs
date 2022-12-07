@@ -516,15 +516,13 @@ namespace Simple.Wpf.Terminal
             }
         }
 
-        private void HandlePromptChanged(string prompt)
-        {
+        private void HandlePromptChanged(string prompt) =>
             _promptInline = string.IsNullOrWhiteSpace(Prompt)
                 ? null
                 : new Run(Prompt)
                 {
                     Text = prompt
                 };
-        }
 
         private void HandleLineConverterChanged()
         {
