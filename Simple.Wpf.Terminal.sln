@@ -58,6 +58,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Common"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal", ".net 7.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{ECB8F890-BA26-4780-9333-60252757DD05}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".net 8.0", ".net 8.0", "{E6FF1261-4933-4EA9-A882-1BEA90139F74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal", ".net 8.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj", "{F13C7BD3-A85B-4483-9E30-30C03DF106C6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Common", ".net 8.0\Simple.Wpf.Terminal.Common\Simple.Wpf.Terminal.Common.csproj", "{F9CE9E13-AA64-4F52-946A-51354409A41A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Example", ".net 8.0\Simple.Wpf.Terminal.Example\Simple.Wpf.Terminal.Example.csproj", "{841767A7-6522-46D0-BBC1-919B18753B0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Simple.Wpf.Terminal.Themes", ".net 8.0\Simple.Wpf.Terminal.Themes\Simple.Wpf.Terminal.Themes.csproj", "{9CE96581-2C6E-40FE-B376-E42159508845}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -140,6 +150,22 @@ Global
 		{ECB8F890-BA26-4780-9333-60252757DD05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECB8F890-BA26-4780-9333-60252757DD05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECB8F890-BA26-4780-9333-60252757DD05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F13C7BD3-A85B-4483-9E30-30C03DF106C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F13C7BD3-A85B-4483-9E30-30C03DF106C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F13C7BD3-A85B-4483-9E30-30C03DF106C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F13C7BD3-A85B-4483-9E30-30C03DF106C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9CE9E13-AA64-4F52-946A-51354409A41A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9CE9E13-AA64-4F52-946A-51354409A41A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9CE9E13-AA64-4F52-946A-51354409A41A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9CE9E13-AA64-4F52-946A-51354409A41A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{841767A7-6522-46D0-BBC1-919B18753B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{841767A7-6522-46D0-BBC1-919B18753B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{841767A7-6522-46D0-BBC1-919B18753B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{841767A7-6522-46D0-BBC1-919B18753B0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CE96581-2C6E-40FE-B376-E42159508845}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CE96581-2C6E-40FE-B376-E42159508845}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CE96581-2C6E-40FE-B376-E42159508845}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CE96581-2C6E-40FE-B376-E42159508845}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,6 +190,10 @@ Global
 		{F3C6BDD1-270D-463F-B234-E88AE3B7DCD6} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
 		{7874E096-E448-4CE9-9B99-0F648C8DF076} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
 		{ECB8F890-BA26-4780-9333-60252757DD05} = {49567A3A-5FDE-4F55-A9F5-BC3E32DF609F}
+		{F13C7BD3-A85B-4483-9E30-30C03DF106C6} = {E6FF1261-4933-4EA9-A882-1BEA90139F74}
+		{F9CE9E13-AA64-4F52-946A-51354409A41A} = {E6FF1261-4933-4EA9-A882-1BEA90139F74}
+		{841767A7-6522-46D0-BBC1-919B18753B0C} = {E6FF1261-4933-4EA9-A882-1BEA90139F74}
+		{9CE96581-2C6E-40FE-B376-E42159508845} = {E6FF1261-4933-4EA9-A882-1BEA90139F74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A698FE8B-09D6-42DF-86DD-95B8506A335C}

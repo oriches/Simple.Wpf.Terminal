@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<OutputType>WinExe</OutputType>
-		<TargetFramework>net7.0-windows10.0.17763.0</TargetFramework>
+		<TargetFramework>net8.0-windows10.0.17763.0</TargetFramework>
 		<Nullable>disable</Nullable>
 		<UseWPF>true</UseWPF>
 		<Copyright>Ollie Riches 2022</Copyright>
@@ -13,23 +12,21 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.77" />
+	  <ProjectReference Include="..\..\.net 6.0\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Simple.Wpf.Terminal\Simple.Wpf.Terminal.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<Page Update="App.xaml">
+		<Page Update="BlueTheme.xaml">
 			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
 		</Page>
-		<Page Update="MainWindow.xaml">
+		<Page Update="DarkTheme.xaml">
 			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
 			<SubType>Designer</SubType>
-			<Generator>MSBuild:Compile</Generator>
+		</Page>
+		<Page Update="GreenTheme.xaml">
+			<XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+			<SubType>Designer</SubType>
 		</Page>
 	</ItemGroup>
 
