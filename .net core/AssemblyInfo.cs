@@ -12,7 +12,7 @@ using System.Windows;
 )]
 
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyCopyright("Copyright © 2022")]
+[assembly: AssemblyCopyright("Copyright © 2026")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
