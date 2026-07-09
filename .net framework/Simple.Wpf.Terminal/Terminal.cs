@@ -21,7 +21,7 @@ namespace Simple.Wpf.Terminal
     ///     providing the data for display and processing the entered line when the LineEntered event is raised.
     ///     The data is bound via the ItemsSource dependency property.
     /// </summary>
-    public sealed class Terminal : RichTextBox, ITerminalEx
+    public class Terminal : RichTextBox, ITerminalEx
     {
         /// <summary>
         ///     The items to be displayed in the terminal window, e.g. an ObservableCollection.
